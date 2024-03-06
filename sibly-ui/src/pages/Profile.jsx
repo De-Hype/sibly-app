@@ -7,7 +7,7 @@ const Profile = () => {
     <div className="h-screen">
       <Header />
       <div className="h-4/5 w-full flex items-center justify-center">
-        <div className=" flex w-1/2 tab:w-3/4 ">
+        <div className=" flex w-1/2 tab:w-full ">
           <form className="flex gap-3 flex-col items-center w-full">
             <img
               className="rounded-full h-14 w-14"

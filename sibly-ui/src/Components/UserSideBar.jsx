@@ -24,7 +24,7 @@ const UserSideBar = () => {
     show = true
   }
   return (
-    <section className={show ?  "h-full overflow-y-auto border self-start flex flex-col gap-3 px-3 w-1/4 tab:w-full py-2 shadow" :"hidden"}>
+    <section className={show ?  "h-full overflow-y-auto border self-start flex flex-col gap-3 px-3 tab:px-1 w-1/4 tab:w-full py-2 shadow" :"hidden"}>
       <form
         onSubmit={handleFriendSearch}
         className="border py-1 px-2 rounded relative flex items-center"

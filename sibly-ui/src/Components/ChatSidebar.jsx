@@ -11,7 +11,7 @@ const ChatSidebar = () => {
   
   let show = useSelector((state) => state.action.showFriends);
   const width = window.innerWidth;
-  console.log(width)
+  
   if (width>720){
     show = false
   }
@@ -37,7 +37,9 @@ const ChatSidebar = () => {
           <SlOptionsVertical className="text-2xl font-bold cursor-pointer transition hover:text-blue-700" />
         </div>
       </aside>
-      <aside className="h-2/3 overflow-y-auto bg-blue-400"></aside>
+      <aside className="h-2/3 overflow-y-auto bg-blue-400">
+        
+      </aside>
       <aside className="self-end relative px-4 shadow-sm py-3 w-full border flex items-center rounded-2xl">
         <span className=" cursor-pointer absolute transition hover:bg-white hover:border  hover:border-blue-600 rounded-full px-3 py-3 left-2 bg-blue-700">
           <FaPlus className="text-white transition hover:text-blue-700" />

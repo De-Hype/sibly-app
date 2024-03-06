@@ -9,8 +9,7 @@ import { showFriendsDisplay, showFriendsHide } from "../redux/actionSlice";
 const Chat = () => {
   const show = useSelector((state) => state.action.showFriends);
   const dispatch = useDispatch();
-  console.log(show);
-
+  
   return (
     <div className="h-screen ">
       <Header />

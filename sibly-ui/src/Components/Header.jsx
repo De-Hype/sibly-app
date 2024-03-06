@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 
 const Header = () => {
   return (
-    <div className="flex justify-between items-center py-2 px-4 border-b">
+    <div className="flex justify-between items-center py-2 px-4 tab:px-1 border-b">
       <SiBitly className="text-5xl cursor-pointer" />
       <div className="flex items-center gap-5">
         <Link

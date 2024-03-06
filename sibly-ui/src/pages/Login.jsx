@@ -12,9 +12,9 @@ const Login = () => {
   };
   return (
     <div className="h-screen flex items-center justify-center">
-      <div className="flex  py-3 px-4 items-center justify-center flex-col gap-2 w-1/2 tab:w-4/5 sm:w-screen ">
+      <div className="flex  py-3 px-4 items-center justify-center flex-col gap-2 w-1/2 tab:w-full sm:w-full ">
         <SiBitly className="text-5xl" />
-        <form onSubmit={HandleLogin} className="flex bg-red-400 flex-col w-full gap-2">
+        <form onSubmit={HandleLogin} className="flex  flex-col w-full gap-2">
           <input
             type="text"
             name="email"

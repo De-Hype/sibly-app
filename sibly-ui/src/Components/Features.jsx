@@ -4,7 +4,7 @@ import { MdVideoCameraFront } from "react-icons/md";
 
 const Features = () => {
   return (
-    <section className="grid grid-cols-3 mt-9 tab:grid-cols-1 tab:gap-9 tab:py-4 gap-3 py-2 px-4">
+    <section className="grid grid-cols-3 mt-9 tab:grid-cols-1 tab:gap-9 tab:py-4 gap-3 py-2 px-4 tab:px-1">
       <aside className="flex flex-col gap-1 rounded-tr-3xl justify-end relative border  tab:py-6 py-4 px-4">
         <span className="cursor-pointer hover:bg-blue-900 absolute -top-5 left-12 border rounded-full bg-blue-700 px-2 py-2 flex items-center justify-center">
           <FaUserFriends className="  text-white" />
