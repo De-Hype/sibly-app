@@ -6,7 +6,7 @@ const Footer = () => {
           <span>Created by </span>
           <Link
             className="text-black font-extrabold transition hover:text-red-500"
-            href="https:?/hire-david-hype.vercel.app"
+            to="https://hire-david-hype.vercel.app"
           >
             David Hype
           </Link>

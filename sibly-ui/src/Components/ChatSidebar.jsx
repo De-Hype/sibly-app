@@ -9,7 +9,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 
 const ChatSidebar = () => {
   return (
-    <section className="w-3/4 h-full flex flex-col gap-2">
+    <section className="w-3/4 tab:w-full h-full flex flex-col gap-2">
       <aside className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img

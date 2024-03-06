@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { SiBitly } from "react-icons/si";
 import { Link } from "react-router-dom";
@@ -13,8 +12,8 @@ const Register = () => {
     console.log(name, username, email, password);
   };
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="flex  py-3 px-4 items-center justify-center flex-col gap-2 w-1/2 tab:w-3/4 ">
+    <div className="h-screen flex items-center justify-center">
+      <div className="flex  py-3 px-4 items-center justify-center flex-col gap-2 w-1/2 tab:w-4/5 sm:w-full ">
         <SiBitly className="text-5xl" />
         <form onSubmit={HandleRegister} className="flex flex-col w-full gap-2">
           <input

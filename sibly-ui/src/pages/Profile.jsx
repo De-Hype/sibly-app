@@ -1,4 +1,5 @@
-
+import Footer from "../Components/Footer";
+import Header from "../Components/Header";
 import unknownUser from "../assets/unknownUser.jpeg";
 
 const Profile = () => {

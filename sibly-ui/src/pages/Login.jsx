@@ -11,15 +11,15 @@ const Login = () => {
     console.log(email, password);
   };
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="flex  py-3 px-4 items-center justify-center flex-col gap-2 w-1/2 tab:w-3/4 ">
+    <div className="h-screen flex items-center justify-center">
+      <div className="flex  py-3 px-4 items-center justify-center flex-col gap-2 w-1/2 tab:w-4/5 sm:w-screen ">
         <SiBitly className="text-5xl" />
-        <form onSubmit={HandleLogin} className="flex flex-col w-full gap-2">
+        <form onSubmit={HandleLogin} className="flex bg-red-400 flex-col w-full gap-2">
           <input
             type="text"
             name="email"
             onChange={(e) => setEmail(e.target.value)}
-            className="text-sm outline-none rounded-xl border px-3 py-2"
+            className="text-smd outline-none rounded-xl border px-3 py-2"
             placeholder="Email Address"
             id=""
           />
@@ -27,7 +27,7 @@ const Login = () => {
             type="password"
             name="password"
             onChange={(e) => setPassword(e.target.value)}
-            className="text-sm outline-none rounded-xl border px-3 py-2"
+            className="text-smd outline-none rounded-xl border px-3 py-2"
             placeholder="Password"
             id=""
           />
@@ -56,7 +56,7 @@ const Login = () => {
           <span>Don't have an account?</span>
           <Link
             className="text-blue-500 transition hover:text-red-500"
-            onTouchMoveCapture="/register"
+           to="/register"
           >
             register
           </Link>
