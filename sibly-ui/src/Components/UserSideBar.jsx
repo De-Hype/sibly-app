@@ -4,10 +4,14 @@ import { useState } from "react";
 import unknownUser from "../assets/unknownUser.jpeg";
 import { FaSearch } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import { useSelector } from "react-redux";
+import { SiTruenas } from "react-icons/si";
 
 const UserSideBar = () => {
   const [search, setSearch] = useState("");
-
+     let show = useSelector((state) => state.action.showFriends);
+     const width = window.innerWidth;
+     //If show is true we are to hide the 
   //Search components
   //Messaged user components
   //For the messaged user, it will have this =>
@@ -16,8 +20,11 @@ const UserSideBar = () => {
     e.preventDefault();
     console.log(search);
   };
+  if (width>720){
+    show = true
+  }
   return (
-    <section className="h-full overflow-y-auto border self-start flex flex-col gap-3 px-3 w-1/4 tab:w-full py-2 shadow">
+    <section className={show ?  "h-full overflow-y-auto border self-start flex flex-col gap-3 px-3 w-1/4 tab:w-full py-2 shadow" :"hidden"}>
       <form
         onSubmit={handleFriendSearch}
         className="border py-1 px-2 rounded relative flex items-center"

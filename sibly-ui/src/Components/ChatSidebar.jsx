@@ -6,10 +6,17 @@ import { FaPlus } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { IoCall } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
-
+import { useSelector } from "react-redux";
 const ChatSidebar = () => {
+  
+  let show = useSelector((state) => state.action.showFriends);
+  const width = window.innerWidth;
+  console.log(width)
+  if (width>720){
+    show = false
+  }
   return (
-    <section className="w-3/4 tab:w-full h-full flex flex-col gap-2">
+    <section className={!show ? "w-3/4 tab:w-full h-full flex flex-col gap-2": "hidden"}>
       <aside className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
@@ -45,7 +52,8 @@ const ChatSidebar = () => {
           <IoSend className="text-white transition hover:text-blue-700" />
         </span>
       </aside>
-    </section>
+    </section> 
+
   );
 };
 
