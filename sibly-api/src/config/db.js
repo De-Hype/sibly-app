@@ -1,0 +1,4 @@
+DB_URI = 
+SESSION_MAX_AGE = 
+SESSION_SECRET = ifonlyyou76363couldbssttts
+PORT = 8080
