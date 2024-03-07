@@ -22,7 +22,7 @@ const FriendRequest = () => {
   return (
     <div className="h-screen ">
       <Header />
-      <section className="h-3/4 my-3 py-2 px-4 flex justify-center items-center gap-3">
+      <section className="h-3/4 my-3 py-2 px-4 sm:w-full sm:px-1  flex justify-center items-center gap-3">
         <section className="h-full overflow-y-auto border self-start flex flex-col gap-3 px-3 w-3/4 tab:w-full py-2 shadow">
           <form
             onSubmit={handleFriendAdd}
@@ -41,7 +41,7 @@ const FriendRequest = () => {
               onClick={handleFriendAdd}
             />
           </form>
-          <aside className="">
+          <aside className="w-full">
             <div className="flex items-center justify-between transition px-2 py-2 border-b hover:shadow">
               <div className="flex items-center gap-1">
                 <img

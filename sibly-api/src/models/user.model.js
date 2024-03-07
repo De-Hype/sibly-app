@@ -18,6 +18,10 @@ const userSchema = new mongoose.schema({
         type:String,
         required:true,
     },
+    lastActive:{
+        type:Number,
+        required:true
+    },
     profilePic:{
         type:String,
         default:null
