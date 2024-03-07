@@ -15,5 +15,5 @@ const port = process.env.PORT || 7070
 
 Connect().then(()=>{
 
-    app.listen(port, ()=>{console.log("Server runing")})
+    app.listen(port, ()=>{console.log(`Server runing on ${port}`)})
 })

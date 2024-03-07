@@ -8,6 +8,6 @@ const Connect =async ()=>{
     } catch (error) {
         console.error("DB connection failed")
     }
-}
+} 
 module.exports = Connect
 // morgan, nodem
