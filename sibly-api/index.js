@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const Connect = require("./src/config/db");
 const GlobalErrorHandler = require("./src/errors/errorHandler");
+const authRoutes = require("./src/routes/auth.routes")
 
 
 const app = express()
@@ -31,7 +32,7 @@ app.use(session({
         maxAge: parseInt( process.env.SESSION_MAX_AGE)
     }
 }))
-
+app.use("/v1/api/auth", authRoutes);
 
 app.all("*", (req, res, next) => {
 
