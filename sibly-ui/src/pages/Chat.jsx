@@ -11,9 +11,9 @@ const Chat = () => {
   const dispatch = useDispatch();
   
   return (
-    <div className="h-screen ">
+    <div className="h-screen w-full">
       <Header />
-      <section className="h-3/4 tab:overflow-y-auto my-3 py-2 px-4 flex tab:flex-col items-center gap-3">
+      <section className="h-3/4 tab:w-full tab:px-1 tab:overflow-y-auto my-3 py-2 px-4 flex tab:flex-col items-center gap-3">
         <section className="hidden w-full tab:flex justify-between items-center">
           {show ? 
           <p className="text-sm font-semibold">See friends</p>:

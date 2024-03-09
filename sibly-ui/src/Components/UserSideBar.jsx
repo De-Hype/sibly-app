@@ -20,7 +20,7 @@ const UserSideBar = () => {
     e.preventDefault();
     console.log(search);
   };
-  if (width>720){
+  if (width>840){
     show = true
   }
   return (

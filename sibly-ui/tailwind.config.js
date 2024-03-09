@@ -9,7 +9,7 @@ export default {
     extend: {
       screens:{
         "sm":{"max":"520px"},
-        "tab":{"max":"720px"},
+        "tab":{"max":"840px"},
       },
     },
   },

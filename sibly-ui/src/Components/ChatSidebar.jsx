@@ -7,16 +7,18 @@ import { IoSend } from "react-icons/io5";
 import { IoCall } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
 import { useSelector } from "react-redux";
+import ChatBoxes from "./ChatBoxes";
+import ChatBoxSender from "./ChatBoxSender";
 const ChatSidebar = () => {
   
   let show = useSelector((state) => state.action.showFriends);
   const width = window.innerWidth;
   
-  if (width>720){
+  if (width>840){
     show = false
   }
   return (
-    <section className={!show ? "w-3/4 tab:w-full h-full flex flex-col gap-2": "hidden"}>
+    <section className={!show ? "w-3/4 tab:w-full h-full flex tab:overflow-y-hidden flex-col gap-2": "hidden"}>
       <aside className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
@@ -37,8 +39,21 @@ const ChatSidebar = () => {
           <SlOptionsVertical className="text-2xl font-bold cursor-pointer transition hover:text-blue-700" />
         </div>
       </aside>
-      <aside className="h-2/3 overflow-y-auto bg-blue-400">
-        
+      <aside className="h-2/3 overflow-y-auto relative">
+        <ChatBoxes />
+        <ChatBoxSender />
+        <ChatBoxes />
+        <ChatBoxSender />
+        <ChatBoxes />
+        <ChatBoxSender />
+        <ChatBoxes />
+        <ChatBoxes />
+        <ChatBoxSender />
+        <ChatBoxes />
+        <ChatBoxSender />
+        <ChatBoxSender />
+        <ChatBoxes />
+        <ChatBoxes />
       </aside>
       <aside className="self-end relative px-4 shadow-sm py-3 w-full border flex items-center rounded-2xl">
         <span className=" cursor-pointer absolute transition hover:bg-white hover:border  hover:border-blue-600 rounded-full px-3 py-3 left-2 bg-blue-700">
