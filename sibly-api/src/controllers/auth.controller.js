@@ -21,10 +21,11 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
   const hashedPassword = await bcryptjs.hash(password, salt);
 
   const user = await User.create({
-    name,
-    email,
-    username,
+    name:value.name,
+    email:value.email,
+    username:value.username,
     password: hashedPassword,
+    lastActive:new Date()
   });
 
   return res.status(202).json({
@@ -42,6 +43,9 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
 
 module.exports.SignIn = catchAsync(async (req, res, next) => {
   const { error, value } = ValidateSignIn(req.body);
+  if (error) {
+    return next(new AppError(error.message, 402));
+  }
 
   const user = await User.findOne({ email: value.email });
   if (!user) {

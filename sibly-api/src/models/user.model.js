@@ -19,8 +19,9 @@ const userSchema = new mongoose.schema({
         required:true,
     },
     lastActive:{
-        type:Number,
-        required:true
+        type:Date,
+        required:true,
+        default:Date.now
     },
     profilePic:{
         type:String,
