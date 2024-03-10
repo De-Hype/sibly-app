@@ -47,7 +47,7 @@ const UserSideBar = () => {
               src={unknownUser}
               alt="A profile image of the zenchat chat application user, David Hype ."
             />
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col items-start gap-1">
               <h3 className="font-bold text-sm">My Sunlight</h3>
               <p className="text-xs font-">I love you...</p>
             </div>
@@ -64,7 +64,7 @@ const UserSideBar = () => {
               src={unknownUser}
               alt="A profile image of the zenchat chat application user, David Hype ."
             />
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col items-start gap-1">
               <h3 className="font-bold text-sm">Sufficient White</h3>
               <p className="text-xs font-">This is the last...</p>
             </div>
@@ -81,14 +81,14 @@ const UserSideBar = () => {
               src={unknownUser}
               alt="A profile image of the zenchat chat application user, David Hype ."
             />
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col items-start gap-1">
               <h3 className="font-bold text-sm">David Hype</h3>
-              <p className="text-xs font-">Bring jobs.</p>
+              <p className="text-xs font-">I am open to...</p>
             </div>
           </div>
           <div className="flex flex-col items-center justify-center gap-1">
             <GoDotFill className="text-green-500 font-bold" />
-            <p className="font-light text-xs self-end">10:40 AM</p>
+            <p className="font-light text-xs self-end">11:26 AM</p>
           </div>
         </div>
 

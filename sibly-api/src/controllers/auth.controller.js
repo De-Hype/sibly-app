@@ -25,7 +25,9 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
     email:value.email,
     username:value.username,
     password: hashedPassword,
-    lastActive:new Date()
+    lastActive:new Date(),
+    friends:[],
+    profilePic:""
   });
 
   return res.status(202).json({

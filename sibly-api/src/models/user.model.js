@@ -23,6 +23,10 @@ const userSchema = new mongoose.schema({
         required:true,
         default:Date.now
     },
+    friends:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }],
     profilePic:{
         type:String,
         default:null

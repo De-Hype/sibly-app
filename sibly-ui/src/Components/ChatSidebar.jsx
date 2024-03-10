@@ -40,20 +40,12 @@ const ChatSidebar = () => {
         </div>
       </aside>
       <aside className="h-2/3 overflow-y-auto relative">
-        <ChatBoxes />
-        <ChatBoxSender />
-        <ChatBoxes />
-        <ChatBoxSender />
-        <ChatBoxes />
-        <ChatBoxSender />
-        <ChatBoxes />
-        <ChatBoxes />
-        <ChatBoxSender />
-        <ChatBoxes />
-        <ChatBoxSender />
-        <ChatBoxSender />
-        <ChatBoxes />
-        <ChatBoxes />
+        
+        <ChatBoxSender message={"Yes, sure"} time={"11:26 AM"} />
+        <ChatBoxSender message={"I am open to frontend, and backend roles involving Javascript and Typescript."} time={"11:26 AM"} />
+        <ChatBoxes message={"Okay...will inform you when there is a vacancy in my company"} time={"11:26 AM"} />
+
+       
       </aside>
       <aside className="self-end relative px-4 shadow-sm py-3 w-full border flex items-center rounded-2xl">
         <span className=" cursor-pointer absolute transition hover:bg-white hover:border  hover:border-blue-600 rounded-full px-3 py-3 left-2 bg-blue-700">
