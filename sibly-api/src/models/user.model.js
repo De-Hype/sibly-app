@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.schema({
+const userSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true
@@ -22,7 +22,7 @@ const userSchema = new mongoose.schema({
         type:Date,
         required:true,
         default:Date.now
-    },
+    }, 
     friends:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"

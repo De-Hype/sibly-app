@@ -7,10 +7,20 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import FriendRequest from "./pages/FriendRequest";
 import CallLogs from "./pages/CallLogs";
+import {Toaster} from "sonner";
 
 function App() {
   return (
     <>
+    <Toaster position="top-center" toastOptions={{
+       unstyled:true,
+      classNames:{
+        error:"bg-red-400  text-white  px-4 py-2 rounded-xl flex items-center gap-2 ",
+        success:"bg-green-400 text-white px-4 py-2 rounded-xl flex items-center gap-2 ",
+        info:"bg-blue-400  text-white   px-4 py-2 rounded-xl flex items-center gap-2 ",
+        warning:"bg-yellow-400  text-white  px-4 py-2 rounded-xl flex items-center gap-2 " 
+      }
+    }} />
       <BrowserRouter>
         <Routes>
           <Route path="/" exact element={<LandingPage />} />

@@ -29,7 +29,16 @@ module.exports.DeleteUser = catchAsync(async (req, res, next) => {
     // let { name, email, username, password } = req.body;
     //We will check for that users id and also check if the ID mathes with the one we get on the session
     //If they actually match, we go ahead and delete the account, and then destroy the session
-   
+   //The 
+   const userId = req.params.id;
+
+
+    req.session.destroy((err)=>{
+      if(err){
+          return next(new AppError("User session could not be destroyed ", 500));
+      }
+    });
+
   
     return res.status(202).json({
       status: "ok",
@@ -49,6 +58,20 @@ module.exports.AddFriend = catchAsync(async (req, res, next) => {
       status: "ok",
       success: "added",
       message: "Friend added succesfully",
+   
+    });
+  });
+
+module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
+    // let { name, email, username, password } = req.body;
+    //We will check for that users id and also check if the ID mathes with the one we get on the session
+    //If they actually match, we go ahead and delete the account, and then destroy the session
+   
+  
+    return res.status(202).json({
+      status: "ok",
+      success: "fetched",
+      message: "Users fetched succesfully",
    
     });
   });

@@ -11,14 +11,14 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
   // let { name, email, username, password } = req.body;
   const { error, value } = ValidateSignUp(req.body);
   if (error) {
-    return next(new AppError(error.message, 402));
+    return next(new AppError(error.message, 405));
   }
   const findUser = await User.findOne({ email: value.email });
   if (findUser) {
     return next(new AppError("User already exist", 402));
   }
   const salt = await bcryptjs.genSalt(8);
-  const hashedPassword = await bcryptjs.hash(password, salt);
+  const hashedPassword = await bcryptjs.hash(value.password, salt);
 
   const user = await User.create({
     name:value.name,
@@ -35,7 +35,7 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
     success: "created",
     message: "User account created succesfully",
     account: {
-      id: user_id,
+      id: user._id,
       name: user.name,
       email: user.email,
       username: user.username,
@@ -63,10 +63,13 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
       return next(new AppError("Error generating new sessions", 500));
     } else {
       req.session.user = {
-        id: user_id,
+        id: user._id,
         name: user.name,
         email: user.email,
         username: user.username,
+        lastActive:user.lastActive,
+      friends:user.friends,
+      image:user.profilePic
       };
     }
   });
@@ -76,28 +79,41 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
     success:"logged",
     message: "User succesfully logged in",
     account: {
-      id: user_id,
+      id: user._id,
       name: user.name,
       email: user.email,
       username: user.username,
+      lastActive:user.lastActive,
+      friends:user.friends,
+      image:user.profilePic
     },
   });
 });
 
 
 
+
 module.exports.LogOut = catchAsync(async (req, res, next)=>{
-    req.session.destroy((err)=>{
-        if(err){
-            return next(new AppError("Error logging user out ", 500));
-        } else{
-            res.status(202).json({
-                status: "ok",
-                success:"out",
-                message: "User has  logged out", 
-             });
-        }
-    })
+  console.log(req.session.user)
+  const account = req.session.user;
+  res.status(202).json({
+               status: "ok",
+               success:"out",
+                 message: "Details fetched", 
+                 user:account,
+                 expressStuff:req.session
+            });
+    // req.session.destroy((err)=>{
+    //     if(err){
+    //         return next(new AppError("Error logging user out ", 500));
+    //     } else{
+    //         res.status(202).json({
+    //             status: "ok",
+    //             success:"out",
+    //             message: "User has  logged out", 
+    //          });
+    //     }
+    // })
        
 })
 
