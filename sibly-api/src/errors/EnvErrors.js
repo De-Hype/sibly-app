@@ -8,7 +8,9 @@ const sendDevError = (err, res) => {
     });
   };
 
-  const sendProdError = (err, res) => {
+const sendProdError = (err, res) => {
+  console.log('Somehow')
+  console.log(err)
     if (err.isOperational) {
       return res.status(err.statusCode).json({
         status: err.status,

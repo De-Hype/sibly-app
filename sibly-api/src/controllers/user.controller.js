@@ -3,6 +3,8 @@
 
 const AppError = require("../errors/AppError");
 const catchAsync = require("../errors/catchAsync");
+const { ValidateSignUp } = require("../helpers/formValidation");
+const User = require("../models/user.model");
 
 module.exports.UpdateUser = catchAsync(async (req, res, next) => {
     // let { name, email, username, password } = req.body;
@@ -66,12 +68,13 @@ module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
     // let { name, email, username, password } = req.body;
     //We will check for that users id and also check if the ID mathes with the one we get on the session
     //If they actually match, we go ahead and delete the account, and then destroy the session
-   
+   const users = await User.find().select("+password");
+   console.log(users)
   
-    return res.status(202).json({
+    return res.status(200).json({
       status: "ok",
       success: "fetched",
       message: "Users fetched succesfully",
-   
+      users:users
     });
   });

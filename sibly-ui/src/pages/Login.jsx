@@ -1,24 +1,35 @@
-
 import { useState } from "react";
 import { SiBitly } from "react-icons/si";
-import { Link } from "react-router-dom";
-import {toast} from "sonner";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import axios from "axios";
 import { API } from "../utils/server";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const HandleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.patch(`${API}/auth/login`)
-      toast.success("User has logged in succesfully")
+      const result = await axios.patch(`${API}/auth/sign-in`, {
+        email,
+        password,
+      });
+      console.log(result);
+      if (result.data.success == "logged") {
+        toast.success("User has logged in succesfully");
+        return navigate("/chat/123");
+      }
+
     } catch (err) {
-      toast.warning("An error occured while logging in user, please retry")
-      console.error(err)
+      console.log(err.response.data)
+      if (err.response.data){
+
+        toast.warning("An error occured while logging in user, please retry");
+      }
+      console.error(err);
     }
-    console.log(email, password);
   };
   return (
     <div className="h-screen flex items-center  justify-center">
@@ -31,7 +42,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="text-smd outline-none rounded-xl border px-3 py-2"
             placeholder="Email Address"
-            id=""
+            id="email"
           />
           <input
             type="password"
@@ -39,7 +50,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="text-smd outline-none rounded-xl border px-3 py-2"
             placeholder="Password"
-            id=""
+            id="password"
           />
           <input
             type="submit"
@@ -66,7 +77,7 @@ const Login = () => {
           <span>Don't have an account?</span>
           <Link
             className="text-blue-500 transition hover:text-red-500"
-           to="/register"
+            to="/register"
           >
             register
           </Link>

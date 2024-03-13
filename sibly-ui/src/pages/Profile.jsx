@@ -3,6 +3,7 @@ import axios from "axios";
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 import unknownUser from "../assets/unknownUser.jpeg";
+import { useEffect } from "react";
 
 const Profile = () => {
   const handleUpdateAccount = async (e)=>{
@@ -27,6 +28,21 @@ const Profile = () => {
       console.error(error)
     }
   }
+  const handleFetchAccountDetails = async ()=>{
+    try {
+      
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  useEffect(() => {
+    handleFetchAccountDetails()
+  
+    return () => {
+      
+    }
+  }, [])
+  
   return (
     <div className="h-screen">
       <Header />

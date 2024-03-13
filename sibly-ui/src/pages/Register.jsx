@@ -1,15 +1,35 @@
 import { useState } from "react";
 import { SiBitly } from "react-icons/si";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import axios from "axios";
+import { API } from "../utils/server";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const HandleRegister = (e) => {
+  const navigate = useNavigate();
+  const HandleRegister = async (e) => {
     e.preventDefault();
-    console.log(name, username, email, password);
+    console.log();
+    try {
+      const result = await axios.post(`${API}/auth/register`, {
+        name, username, email, password
+      });
+      console.log(result)
+      if (result.data.success == "created"){
+        toast.success("Account created succesfully");
+        navigate("/login")
+      } else{
+        toast.error("User with details already exist")
+      }
+     
+    } catch (err) {
+      toast.warning("An error occured while registering user, please retry");
+      console.error(err);
+    }
   };
   return (
     <div className="h-screen flex items-center justify-center">

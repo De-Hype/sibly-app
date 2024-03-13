@@ -7,6 +7,8 @@ const morgan = require("morgan");
 const Connect = require("./src/config/db");
 const GlobalErrorHandler = require("./src/errors/errorHandler");
 const authRoutes = require("./src/routes/auth.routes")
+const userRoutes = require("./src/routes/user.routes");
+const AppError = require("./src/errors/AppError");
 
 
 const app = express()
@@ -16,7 +18,7 @@ process.on("uncaughtException", (err) => {
     console.log(err.name, err.message);
     console.log("Unhandled Exception, shutting down");
     process.exit(1);
-  });
+});
   
 
 app.use(cors());
@@ -33,6 +35,7 @@ app.use(session({
     }
 }))
 app.use("/v1/api/auth", authRoutes);
+app.use("/v1/api/user", userRoutes);
 
 app.all("*", (req, res, next) => {
 
@@ -43,7 +46,7 @@ app.all("*", (req, res, next) => {
       )
     );
   });
-  app.use(GlobalErrorHandler);
+app.use(GlobalErrorHandler);
   
 
 
