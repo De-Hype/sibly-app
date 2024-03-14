@@ -15,7 +15,7 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
   }
   const findUser = await User.findOne({ email: value.email });
   if (findUser) {
-    return next(new AppError("User already exist", 402));
+    return next(new AppError("User already exist", 400));
   }
   const salt = await bcryptjs.genSalt(8);
   const hashedPassword = await bcryptjs.hash(value.password, salt);
@@ -55,7 +55,7 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
   }
   const isPasswordMatch = await bcryptjs.compare(value.password, user.password);
   if (!isPasswordMatch) {
-    return next(new AppError("Incorrect login details", 404));
+    return next(new AppError("Incorrect login details", 400));
   }
   //Set up the session stuff here
   req.session.regenerate((err) => {
@@ -91,24 +91,16 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
 });
 
 module.exports.LogOut = catchAsync(async (req, res, next) => {
-  console.log(req.session.user);
-  const account = req.session.user;
-  res.status(202).json({
-    status: "ok",
-    success: "out",
-    message: "Details fetched",
-    user: account,
-    expressStuff: req.session,
-  });
-  // req.session.destroy((err)=>{
-  //     if(err){
-  //         return next(new AppError("Error logging user out ", 500));
-  //     } else{
-  //         res.status(202).json({
-  //             status: "ok",
-  //             success:"out",
-  //             message: "User has  logged out",
-  //          });
-  //     }
-  // })
+  
+  req.session.destroy((err)=>{
+      if(err){
+          return next(new AppError("Error logging user out ", 500));
+      } else{
+          res.status(202).json({
+              status: "ok",
+              success:"out",
+              message: "User has  logged out",
+           });
+      }
+  })
 });

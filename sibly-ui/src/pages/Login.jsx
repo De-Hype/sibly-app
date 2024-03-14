@@ -16,19 +16,22 @@ const Login = () => {
         email,
         password,
       });
-      console.log(result);
+     
       if (result.data.success == "logged") {
         toast.success("User has logged in succesfully");
+        localStorage.setItem("user", JSON.stringify(result.data.account));
         return navigate("/chat/123");
       }
-
     } catch (err) {
-      console.log(err.response)
-      if (err.response.data){
-
-        toast.warning("An error occured while logging in user, please retry");
+      
+      if (err.response.statusText == "Not Found") {
+        return toast.error("User does not exist")
+      }
+      if (err.response.status == 400) {
+        return toast.error("Invalid login details")
       }
       console.error(err);
+      toast.warning("An error occured while logging in user, please retry");
     }
   };
   return (

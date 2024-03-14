@@ -20,13 +20,15 @@ const Register = () => {
       });
       console.log(result)
       if (result.data.success == "created"){
-        toast.success("Account created succesfully");
-        navigate("/login")
-      } else{
-        toast.error("User with details already exist")
-      }
+         toast.success("Account created succesfully");
+        return navigate("/login")
+      } 
      
     } catch (err) {
+      if (err.response.status == 400) {
+        return toast.error("User already exist")
+      }
+     
       toast.warning("An error occured while registering user, please retry");
       console.error(err);
     }

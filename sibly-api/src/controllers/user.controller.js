@@ -65,10 +65,8 @@ module.exports.AddFriend = catchAsync(async (req, res, next) => {
   });
 
 module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
-    // let { name, email, username, password } = req.body;
-    //We will check for that users id and also check if the ID mathes with the one we get on the session
-    //If they actually match, we go ahead and delete the account, and then destroy the session
-   const users = await User.find().select("+password");
+    
+   const users = await User.find().select("-password");
    console.log(users)
   
     return res.status(200).json({
@@ -78,3 +76,16 @@ module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
       users:users
     });
   });
+
+  module.exports.GetSingleUser = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id).select("-password");
+    if(!user){
+      return next(new AppError("User not found", 404));
+    }
+    return res.status(200).json({
+       status: "ok",
+       success: "fetched",
+       message: "Users fetched succesfully",
+       user:user
+     });
+   });

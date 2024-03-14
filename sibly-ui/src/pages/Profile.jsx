@@ -4,51 +4,57 @@ import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 import unknownUser from "../assets/unknownUser.jpeg";
 import { useEffect } from "react";
+import { toast } from "sonner";
+import { API } from "../utils/server";
 
 const Profile = () => {
-  const handleUpdateAccount = async (e)=>{
+  const handleUpdateAccount = async (e) => {
     e.preventDefault();
     try {
-    
-    } catch (error) {
-      console.error(error)
-    }
-  }
-  const handleDeleteAccount = async ()=>{
-    try {
-      
-    } catch (error) {
-      console.error(error)
-    }
-  }
-  const handleLogOut = async ()=>{
-    try {
-      
-    } catch (error) {
-      console.error(error)
-    }
-  }
-  const handleFetchAccountDetails = async ()=>{
-    try {
-      
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
+  const handleDeleteAccount = async () => {
+    try {
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleLogOut = async () => {
+    try {
+      const result = await axios.get(`${API}/auth/sign-out`);
+      if (result.data.success == "out") {
+        toast.info("User has logged out succesfully");
+        localStorage.removeItem("user");
+        return navigate("/login");
+      }
+    } catch (err) {
+      toast.error("An error occured while logging out user, please retry");
+      console.error(err);
+    }
+  };
+  const handleFetchAccountDetails = async () => {
+    try {
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useEffect(() => {
-    handleFetchAccountDetails()
-  
-    return () => {
-      
-    }
-  }, [])
-  
+    handleFetchAccountDetails();
+
+    return () => {};
+  }, []);
+
   return (
     <div className="h-screen">
       <Header />
       <div className="h-4/5 w-full flex items-center justify-center">
         <div className=" flex flex-col w-1/2 tab:w-full ">
-          <form onSubmit={handleUpdateAccount} className="flex gap-3 flex-col items-center w-full">
+          <form
+            onSubmit={handleUpdateAccount}
+            className="flex gap-3 flex-col items-center w-full"
+          >
             <img
               className="rounded-full h-14 w-14"
               src={unknownUser}
@@ -83,18 +89,29 @@ const Profile = () => {
               id="confirm-password"
             />
             <input
-            onClick={handleUpdateAccount}
+              onClick={handleUpdateAccount}
               type="submit"
               className="cursor-pointer text-sm outline-none  w-full py-2 text-white bg-blue-500 transition hover:bg-blue-300 rounded-xl"
               value="Update Details"
             />
           </form>
           <div className="flex justify-between items-center mt-3 ">
-            <button type="button" onClick={handleDeleteAccount} className="bg-red-300 text-red-700 px-2 rounded-lg">Delete account</button>
-            <button type="button" onClick={handleLogOut} className="bg-blue-300 text-blue-700 px-2 rounded-lg">Log out</button>
+            <button
+              type="button"
+              onClick={handleDeleteAccount}
+              className="bg-red-300 text-red-700 px-2 rounded-lg"
+            >
+              Delete account
+            </button>
+            <button
+              type="button"
+              onClick={handleLogOut}
+              className="bg-blue-300 text-blue-700 px-2 rounded-lg"
+            >
+              Log out
+            </button>
           </div>
         </div>
-
       </div>
       <Footer />
     </div>

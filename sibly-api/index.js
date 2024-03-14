@@ -27,8 +27,8 @@ app.use(morgan("dev"))
 app.use(express.json());
 app.use(session({
     secret:process.env.SESSION_SECRET,
-    saveUnintialized:true,
-    resave:true,
+    saveUnintialized:false,
+    resave:false,
     cookie:{
         httpOnly:true,
         maxAge: parseInt( process.env.SESSION_MAX_AGE)
