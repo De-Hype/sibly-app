@@ -11,6 +11,7 @@ const GlobalErrorHandler = (err, req, res, next) => {
       return sendDevError(err, res);
     } else{
       let error = { ...err };
+      error.message = err.message;
       if (error.name === "CastError") error = handleCastErrorDB();
       if (error.name === "ValidationError") error = handleValidationErrorDB();
     //   if (error.code === 11000) error =handleDuplicateErrorDB();

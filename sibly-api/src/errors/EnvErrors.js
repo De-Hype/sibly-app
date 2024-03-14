@@ -3,14 +3,14 @@ const sendDevError = (err, res) => {
     res.status(err.statusCode).json({
       status: err.status,
       message:err.message,
-      err:err,
-      
+      error:err,
+      stack:err.stack
     });
   };
 
 const sendProdError = (err, res) => {
-  console.log('Somehow')
-  console.log(err)
+
+  
     if (err.isOperational) {
       return res.status(err.statusCode).json({
         status: err.status,

@@ -23,7 +23,7 @@ const Login = () => {
       }
 
     } catch (err) {
-      console.log(err.response.data)
+      console.log(err.response)
       if (err.response.data){
 
         toast.warning("An error occured while logging in user, please retry");
