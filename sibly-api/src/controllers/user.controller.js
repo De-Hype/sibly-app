@@ -89,3 +89,34 @@ module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
        user:user
      });
    });
+
+module.exports.SearchFriends = catchAsync(async (req, res, next) => {
+    const id = req.session.user.id;
+    const findUserFriends = await User.findOne({id}).populate("friends");
+    if (findUserFriends.length == 0) return next(new AppError("Friends not found", 404));
+
+    return res.status(202).json({
+      status: "ok",
+      success: "found",
+      message: "Friend has been found succesfully",
+      friends:findUserFriends
+    });
+});
+
+
+module.exports.SearchUsers = catchAsync(async (req, res, next) => {
+    const search = req.params.search;
+    if (search == "" || undefined){
+      return next(new AppError("Please provide a value you are searching for", 417));
+    }
+    const findUsers = await User.find({username:{$regex:search, $options:"i"}});
+    if (findUsers.length == 0){
+      return next(new AppError("Users not found", 417));
+    }
+    return res.status(200).json({
+      status: "ok",
+      success: "found",
+      message: "Users has been found succesfully",
+      users:findUsers
+    });
+});
