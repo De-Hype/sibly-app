@@ -2,8 +2,11 @@
 //We will have the message sending part
 
 const catchAsync = require("../errors/catchAsync");
+const encryptMessage = require("../helpers/messageEncryption");
 const Conversation = require("../models/conversation.model");
 const Message = require("../models/message.model");
+
+
 
 module.exports.SendMessage = catchAsync(async (req, res, next) => {
   const message = req.body.message;
@@ -18,10 +21,11 @@ module.exports.SendMessage = catchAsync(async (req, res, next) => {
       particapants: [senderId, receiverId],
     });
   }
+ const encryptedMessage = encryptMessage(message)
   const newMessage = await new Message({
     senderId,
     receiverId,
-    message,
+    message:encryptedMessage,
   });
   if (newMessage) {
     conversation.messages.push(newMessage._id);

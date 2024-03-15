@@ -3,14 +3,18 @@ import { SiBitly } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 import { API } from "../utils/server";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
-  const HandleLogin = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) =>{
     try {
       const result = await axios.patch(`${API}/auth/sign-in`, {
         email,
@@ -33,33 +37,63 @@ const Login = () => {
       console.error(err);
       toast.warning("An error occured while logging in user, please retry");
     }
-  };
+  }
+  
   return (
     <div className="h-screen flex items-center  justify-center">
       <div className="flex  py-3 px-4 items-center justify-center flex-col gap-2 w-1/2 tab:w-full sm:w-full ">
         <SiBitly className="text-5xl" />
-        <form onSubmit={HandleLogin} className="flex  flex-col w-full gap-2">
-          <input
-            type="text"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            className="text-smd outline-none rounded-xl border px-3 py-2"
-            placeholder="Email Address"
-            id="email"
-          />
-          <input
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            className="text-smd outline-none rounded-xl border px-3 py-2"
-            placeholder="Password"
-            id="password"
-          />
+        <form  onSubmit={handleSubmit(onSubmit)} className="flex  flex-col w-full gap-2">
+        <div className="w-full">
+            <input
+              {...register("email", {
+                required: "Email is required",
+              })}
+              defaultValue=""
+              type="text"
+              name="email"
+              className={`text-sm w-full outline-none rounded-xl border px-3 py-2 ${
+                errors.email ? "border-red-500" : ""
+              }`}
+              placeholder="Email Address"
+              id="email"
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm text-left  font-semibold ">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+          <div className="w-full">
+            <input
+              {...register("password", {
+                required: "Password is required",
+                validate: (value) => {
+                  //We will also add for special characters soo
+                  if (value.length < 6) {
+                    return "Password must be atleast six characters";
+                  }
+                },
+              })}
+              type="password"
+              name="password"
+              className={`text-sm w-full outline-none rounded-xl border px-3 py-2 ${
+                errors.password ? "border-red-500" : ""
+              }`}
+              placeholder="Password"
+              id="password"
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm text-left  font-semibold  ">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
           <input
             type="submit"
             value="Log In"
             className="cursor-pointer text-sm outline-none py-2 text-white bg-blue-500 transition hover:bg-blue-300 rounded-xl"
-            onClick={HandleLogin}
+            onClick={handleSubmit(onSubmit)}
           />
         </form>
         <div className="flex gap-3 pt-5 flex-col w-full">
