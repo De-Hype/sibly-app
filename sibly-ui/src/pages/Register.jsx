@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { SiBitly } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { API } from "../utils/server";
 
 const Register = () => {
- 
   const navigate = useNavigate();
   const {
     register,
@@ -16,13 +15,12 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
-        try {
+    try {
       const result = await axios.post(`${API}/auth/register`, {
-        headers:{
-          "Content-Type":"application/json",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body:JSON.stringify(data)
-        
+        body: JSON.stringify(data),
       });
       console.log(result);
       if (result.data.success == "created") {
@@ -38,7 +36,7 @@ const Register = () => {
       console.error(err);
     }
   };
- 
+
   return (
     <div className="h-screen flex items-center justify-center">
       <div className="flex  py-3 px-4 tab:px-1 items-center justify-center flex-col gap-2 w-1/2 tab:w-full  sm:w-full ">

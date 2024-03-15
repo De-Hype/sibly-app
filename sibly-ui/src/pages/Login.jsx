@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { SiBitly } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -17,8 +17,10 @@ const Login = () => {
   const onSubmit = async (data) =>{
     try {
       const result = await axios.patch(`${API}/auth/sign-in`, {
-        email,
-        password,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
      
       if (result.data.success == "logged") {
