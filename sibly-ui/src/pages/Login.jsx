@@ -21,11 +21,14 @@ const Login = () => {
       });
      
       if (result.data.success == "logged") {
-        toast.success("User has logged in succesfully");
         localStorage.setItem("user", JSON.stringify(result.data.account));
-        return navigate("/chat");
+        toast.success("User has logged in succesfully");
+        setTimeout(() => {
+          
+          navigate("/chat");
+        }, 3000);
       }
-    } catch (err) {
+    } catch (err) {return
       
       if (err.response.status == 404) {
         return toast.error("User does not exist")

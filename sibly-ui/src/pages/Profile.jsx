@@ -25,9 +25,13 @@ const Profile = () => {
     try {
       const result = await axios.get(`${API}/auth/sign-out`);
       if (result.data.success == "out") {
-        toast.info("User has logged out succesfully");
         localStorage.removeItem("user");
-        return navigate("/login");
+        toast.info("User has logged out succesfully");
+        setTimeout(() => {
+          
+          navigate("/login");
+        }, 3000);
+        
       }
     } catch (err) {
       toast.error("An error occured while logging out user, please retry");

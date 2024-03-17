@@ -33,6 +33,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: true,
+      sameSite:"none",
       maxAge: parseInt(process.env.SESSION_MAX_AGE),
     },
   })
