@@ -28,7 +28,7 @@ const Login = () => {
           navigate("/chat");
         }, 3000);
       }
-    } catch (err) {return
+    } catch (err) {
       
       if (err.response.status == 404) {
         return toast.error("User does not exist")
