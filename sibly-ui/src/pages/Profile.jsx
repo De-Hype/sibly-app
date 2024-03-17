@@ -25,7 +25,7 @@ const Profile = () => {
     try {
       const result = await axios.get(`${API}/auth/sign-out`);
       if (result.data.success == "out") {
-       await localStorage.removeItem("user");
+      localStorage.removeItem("user");
 
        Promise.resolve().then(()=> {
         toast.info("User has logged out succesfully");

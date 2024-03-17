@@ -49,56 +49,58 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
     return next(new AppError(error.message, 402));
   }
 
-  const user = await User.findOne({ email: value.email });
-  if (!user) {
+  const findUser = await User.findOne({ email: value.email });
+
+  if (!findUser) {
     return next(new AppError("User does not exist", 404));
   }
-  const isPasswordMatch = await bcryptjs.compare(value.password, user.password);
+  const isPasswordMatch = await bcryptjs.compare(
+    value.password,
+    findUser.password
+  );
   if (!isPasswordMatch) {
     return next(new AppError("Incorrect login details", 400));
-  } 
+  }
+
   //Set up the session stuff here
-  if (req.session) {
+
+  const account = {
+    id: findUser._id,
+    name: findUser.name,
+    username: findUser.username,
+    lastActive: findUser.lastActive,
+    friends: findUser.friends,
+    image: findUser.profilePic,
+  };
+
+  if (req.session.account) {
     req.session.regenerate((err) => {
       if (err) {
         return next(new AppError("Error generating new sessions", 500));
       } else {
-        req.session.user = {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          username: user.username,
-          lastActive: user.lastActive,
-          friends: user.friends,
-          image: user.profilePic,
-        };
+        req.session.account = account;
       }
     });
   } else {
-    req.session.user = {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      username: user.username,
-      lastActive: user.lastActive,
-      friends: user.friends,
-      image: user.profilePic,
-    };
+    req.session.account = account;
   }
-  console.log(req.session)
+
   res.status(202).json({
     status: "ok",
     success: "logged",
     message: "User succesfully logged in",
-    account: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      username: user.username,
-      lastActive: user.lastActive,
-      friends: user.friends,
-      image: user.profilePic,
-    },
+    account: account,
+  });
+});
+
+module.exports.CheckIfLoggedIn = catchAsync(async (req, res, next) => {
+  const user = req.session.account;
+  const userid = req.sessionID;
+  
+  res.status(202).json({
+    status: "ok",
+    success: "in",
+    message: "User is logged in",
   });
 });
 

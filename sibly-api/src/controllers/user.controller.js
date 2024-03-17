@@ -59,7 +59,7 @@ module.exports.AddFriend = catchAsync(async (req, res, next) => {
 });
 
 module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
-  console.log(req.sessionID)
+  console.log(req.session.account)
   const users = await User.find().select("-password");
   
   return res.status(200).json({

@@ -21,7 +21,7 @@ const Login = () => {
       });
      
       if (result.data.success == "logged") {
-       await localStorage.setItem("user", JSON.stringify(result.data.account));
+      localStorage.setItem("user", JSON.stringify(result.data.account));
        Promise.resolve().then(()=> {
         toast.success("User has logged in succesfully");
         return navigate("/chat")

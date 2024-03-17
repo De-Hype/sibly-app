@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const session = require("express-session");
-const  store = new session.MemoryStore();
+const mongoStore = require("connect-mongo");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const Connect = require("./src/config/db");
@@ -29,10 +29,9 @@ app.use(
     secret: process.env.SESSION_SECRET,
     saveUnintialized: false,
     resave: false,
-    store,
+  store:  mongoStore.create({mongoUrl: `${process.env.DB_URI}/session-store`}),
     cookie: {
-      httpOnly: true,
-      
+      httpOnly:true,
       sameSite:"none",
       maxAge: parseInt(process.env.SESSION_MAX_AGE),
     },
