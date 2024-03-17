@@ -21,12 +21,12 @@ const Login = () => {
       });
      
       if (result.data.success == "logged") {
-        localStorage.setItem("user", JSON.stringify(result.data.account));
+       await localStorage.setItem("user", JSON.stringify(result.data.account));
+       Promise.resolve().then(()=> {
         toast.success("User has logged in succesfully");
-        setTimeout(() => {
-          
-          navigate("/chat");
-        }, 3000);
+        return navigate("/chat")
+       })
+        
       }
     } catch (err) {
       

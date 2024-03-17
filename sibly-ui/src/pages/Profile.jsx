@@ -25,12 +25,13 @@ const Profile = () => {
     try {
       const result = await axios.get(`${API}/auth/sign-out`);
       if (result.data.success == "out") {
-        localStorage.removeItem("user");
+       await localStorage.removeItem("user");
+
+       Promise.resolve().then(()=> {
         toast.info("User has logged out succesfully");
-        setTimeout(() => {
-          
-          navigate("/login");
-        }, 3000);
+        return navigate("/login");
+       })
+        
         
       }
     } catch (err) {

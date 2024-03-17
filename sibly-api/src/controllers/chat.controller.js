@@ -33,6 +33,7 @@ module.exports.SendMessage = catchAsync(async (req, res, next) => {
   await Promise.all([conversation.save(), newMessage.save()]);
 
   //SocketIo stuff is to go in here;
+  
 
   return res.status(201).json({
     status: "ok",

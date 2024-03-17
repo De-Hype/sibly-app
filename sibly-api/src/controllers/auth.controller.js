@@ -56,7 +56,7 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
   const isPasswordMatch = await bcryptjs.compare(value.password, user.password);
   if (!isPasswordMatch) {
     return next(new AppError("Incorrect login details", 400));
-  }
+  } 
   //Set up the session stuff here
   if (req.session) {
     req.session.regenerate((err) => {
@@ -85,7 +85,7 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
       image: user.profilePic,
     };
   }
-
+  console.log(req.session)
   res.status(202).json({
     status: "ok",
     success: "logged",
