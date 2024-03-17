@@ -30,6 +30,7 @@ app.use(
     resave: false,
     cookie: {
       httpOnly: true,
+      secure: true,
       maxAge: parseInt(process.env.SESSION_MAX_AGE),
     },
   })
