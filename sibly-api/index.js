@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const session = require("express-session");
+const  store = new session.MemoryStore();
 const helmet = require("helmet");
 const morgan = require("morgan");
 const Connect = require("./src/config/db");
@@ -28,6 +29,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     saveUnintialized: false,
     resave: false,
+    store,
     cookie: {
       httpOnly: true,
       secure: true,
