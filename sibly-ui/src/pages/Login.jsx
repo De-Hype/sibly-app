@@ -17,26 +17,25 @@ const Login = () => {
   const onSubmit = async (data) =>{
     try {
       const result = await axios.patch(`${API}/auth/sign-in`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        email:data.email, password:data.password
       });
      
       if (result.data.success == "logged") {
         toast.success("User has logged in succesfully");
         localStorage.setItem("user", JSON.stringify(result.data.account));
-        return navigate("/chat/123");
+        return navigate("/chat");
       }
     } catch (err) {
       
-      if (err.response.statusText == "Not Found") {
+      if (err.response.status == 404) {
         return toast.error("User does not exist")
       }
       if (err.response.status == 400) {
         return toast.error("Invalid login details")
       }
-      console.error(err);
+      if (err.response.status == 429) {
+        return toast.info("Too many request, please try again later")
+      }
       toast.warning("An error occured while logging in user, please retry");
     }
   }

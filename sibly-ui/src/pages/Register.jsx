@@ -17,12 +17,9 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       const result = await axios.post(`${API}/auth/register`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        name:data.name, username:data.username, email:data.email, password:data.password
       });
-      console.log(result);
+      
       if (result.data.success == "created") {
         toast.success("Account created succesfully");
         return navigate("/login");
@@ -30,6 +27,13 @@ const Register = () => {
     } catch (err) {
       if (err.response.status == 400) {
         return toast.error("User already exist");
+      }
+      
+      if (err.response.status == 405) {
+        return toast.error("Invalid registration details")
+      }
+      if (err.response.status == 429) {
+        return toast.info("Too many request, please try again later")
       }
 
       toast.warning("An error occured while registering user, please retry");
