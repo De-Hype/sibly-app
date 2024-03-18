@@ -8,9 +8,11 @@ import Profile from "./pages/Profile";
 import FriendRequest from "./pages/FriendRequest";
 import CallLogs from "./pages/CallLogs";
 import {Toaster} from "sonner";
-
+import Cookies from "js-cookie";
+ 
 function App() {
-  const user = localStorage.getItem("user");
+  //const [user, setuser] = useState(null)
+  const user = Cookies.get("sibly_user");
   return (
     <>
     <Toaster position="top-center" toastOptions={{

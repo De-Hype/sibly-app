@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import Cookies from "js-cookie"
 import { API } from "../utils/server";
 
 const Login = () => {
@@ -21,11 +22,13 @@ const Login = () => {
       });
      
       if (result.data.success == "logged") {
+        Cookies.set("sibly_user", result.data.token, {expires:1})
       localStorage.setItem("user", JSON.stringify(result.data.account));
-       Promise.resolve().then(()=> {
+       //Set to store the token client side
+
         toast.success("User has logged in succesfully");
         return navigate("/chat")
-       })
+      
         
       }
     } catch (err) {

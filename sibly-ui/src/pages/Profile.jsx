@@ -3,11 +3,15 @@ import axios from "axios";
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 import unknownUser from "../assets/unknownUser.jpeg";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { API } from "../utils/server";
 
 const Profile = () => {
+  const token = Cookies.get("sibly_user");
+  const navigate = useNavigate();
   const handleUpdateAccount = async (e) => {
     e.preventDefault();
     try {
@@ -23,14 +27,16 @@ const Profile = () => {
   };
   const handleLogOut = async () => {
     try {
-      const result = await axios.get(`${API}/auth/sign-out`);
-      if (result.data.success == "out") {
-      localStorage.removeItem("user");
-
-       Promise.resolve().then(()=> {
+      const result = await axios.get(`${API}/auth/verify-login`, {headers:{
+        Authorization:`Bearer ${token}`
+      }});
+     if (result.data.success == "out") {
+        localStorage.removeItem("user");
+        //Set to clear the token
+        Cookies.remove("sibly_user")
         toast.info("User has logged out succesfully");
         return navigate("/login");
-       })
+       
         
         
       }
@@ -55,7 +61,7 @@ const Profile = () => {
     <div className="h-screen">
       <Header />
       <div className="h-4/5 w-full flex items-center justify-center">
-        <div className=" flex flex-col w-1/2 tab:w-full ">
+        <div className=" flex  flex-col w-1/2 tab:w-full ">
           <form
             onSubmit={handleUpdateAccount}
             className="flex gap-3 flex-col items-center w-full"

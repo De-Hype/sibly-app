@@ -6,6 +6,7 @@ const AppError = require("../errors/AppError");
 const User = require("../models/user.model");
 const bcryptjs = require("bcryptjs");
 const { ValidateSignUp, ValidateSignIn } = require("../helpers/formValidation");
+const GenerateToken = require("../helpers/GenerateToken");
 
 module.exports.SignUp = catchAsync(async (req, res, next) => {
   // let { name, email, username, password } = req.body;
@@ -61,6 +62,7 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
   if (!isPasswordMatch) {
     return next(new AppError("Incorrect login details", 400));
   }
+ 
 
   //Set up the session stuff here
 
@@ -68,6 +70,7 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
     id: findUser._id,
     name: findUser.name,
     username: findUser.username,
+    email:findUser.email,
     lastActive: findUser.lastActive,
     friends: findUser.friends,
     image: findUser.profilePic,
@@ -84,19 +87,23 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
   } else {
     req.session.account = account;
   }
+  const token = GenerateToken(account)
 
   res.status(202).json({
     status: "ok",
     success: "logged",
     message: "User succesfully logged in",
+    token:token,
     account: account,
   });
 });
 
+
 module.exports.CheckIfLoggedIn = catchAsync(async (req, res, next) => {
   const user = req.session.account;
-  const userid = req.sessionID;
-  
+  const userid = req.sessionID; 
+  console.log(user);
+  console.log(userid);
   res.status(202).json({
     status: "ok",
     success: "in",

@@ -59,7 +59,7 @@ module.exports.AddFriend = catchAsync(async (req, res, next) => {
 });
 
 module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
-  console.log(req.session.account)
+  // console.log(req.session.account) 
   const users = await User.find().select("-password");
   
   return res.status(200).json({
@@ -117,3 +117,21 @@ module.exports.SearchUsers = catchAsync(async (req, res, next) => {
     users: findUsers,
   });
 });
+
+module.exports.GetMyDetails = catchAsync(async(req, res, next) =>{
+  const myEmail = req.user.email;
+  const email = req.body.email;
+  const user = await User.findOne({email}).select("-password");
+  if(!user){
+    return next(new AppError("User has not been found", 404));
+  }
+  if (myEmail != user.email){
+    return next(new AppError("Not same user, can not show you details of another", 404));
+  }
+  return res.status(200).json({
+    status: "ok",
+    success: "found",
+    message: "Your account has been found succesfully",
+    users: user,
+  });
+})
