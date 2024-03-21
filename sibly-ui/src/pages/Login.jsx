@@ -46,6 +46,12 @@ const Login = () => {
       toast.warning("An error occured while logging in user, please retry");
     }
   }
+  const GoogleOauthLogin =()=>{
+    toast.info("Google Oauth is coming soon")
+  }
+  const GithubOauthLogin =()=>{
+    toast.info("Github Oauth is coming soon")
+  }
   
   return (
     <div className="h-screen flex items-center  justify-center">
@@ -108,12 +114,14 @@ const Login = () => {
           <button
             className="text-sm outline-none cursor-pointer py-2 bg-blue-500 rounded-xl text-white hover:bg-blue-300 transition"
             type="button"
+            onclick={GoogleOauthLogin}
           >
             Log in with Google
           </button>
           <button
             className="text-sm outline-none cursor-pointer py-2 bg-black rounded-xl text-white hover:bg-slate-700 transition"
             type="button"
+            onclick={GithubOauthLogin}
           >
             Log in with Github
           </button>
