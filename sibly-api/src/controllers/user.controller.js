@@ -3,41 +3,66 @@
 
 const AppError = require("../errors/AppError");
 const catchAsync = require("../errors/catchAsync");
-const { ValidateSignUp } = require("../helpers/formValidation");
+const bcryptjs = require("bcryptjs");
+const GenerateToken = require("../helpers/GenerateToken");
+const {
+  ValidateUpdateUser,
+} = require("../helpers/formValidation");
 const User = require("../models/user.model");
 
 module.exports.UpdateUser = catchAsync(async (req, res, next) => {
   // let { name, email, username, password } = req.body;
-  const { error, value } = ValidateSignUp(req.body);
+  const { error, value } = ValidateUpdateUser(req.body);
   if (error) {
-    return next(new AppError(error.message, 402));
+    return next(new AppError(error, 402));
   }
+  const id = req.user.id;
+  console.log(value.password)
+  console.log(value.confirmPassword)
+  
+  if (value.password !== value.confirmPassword) {
+    return next(new AppError("Passwords do not match", 403));
+  }
+  const salt = await bcryptjs.genSalt(8);
+  const hashedPassword = await bcryptjs.hash(value.password, salt);
+  console.log(hashedPassword)
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    { email:value.email, username:value.username, password: hashedPassword },
+    { new: true }
+  );
 
-  return res.status(202).json({
+  const account = {
+    id: updatedUser._id,
+    name: updatedUser.name,
+    username: updatedUser.username,
+    email: updatedUser.email,
+    lastActive: updatedUser.lastActive,
+    friends: updatedUser.friends,
+    image: updatedUser.profilePic,
+  };
+  const token = GenerateToken(account);
+
+  res.status(202).json({
     status: "ok",
-    success: "created",
-    message: "User account created succesfully",
-    account: {
-      id: user_id,
-      name: user.name,
-      email: user.email,
-      username: user.username,
-    },
+    success: "updated",
+    message: "User has succesfully updated their account",
+    token: token,
+    account: account,
   });
 });
 
 module.exports.DeleteUser = catchAsync(async (req, res, next) => {
-  // let { name, email, username, password } = req.body;
-  //We will check for that users id and also check if the ID mathes with the one we get on the session
-  //If they actually match, we go ahead and delete the account, and then destroy the session
-  //The
-  const userId = req.params.id;
+  const myId = req.user.id;
+  const id = req.params.id;
+  if (myId != id) {
+    return next(new AppError("You are not allowed to delete this user", 403));
+  }
+  const deletedUser = await User.findByIdAndDelete(id);
 
-  req.session.destroy((err) => {
-    if (err) {
-      return next(new AppError("User session could not be destroyed ", 500));
-    }
-  });
+  if (!deletedUser) {
+    return next(new AppError("User not found", 404));
+  }
 
   return res.status(202).json({
     status: "ok",
@@ -59,9 +84,9 @@ module.exports.AddFriend = catchAsync(async (req, res, next) => {
 });
 
 module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
-  // console.log(req.session.account) 
+  // console.log(req.session.account)
   const users = await User.find().select("-password");
-  
+
   return res.status(200).json({
     status: "ok",
     success: "fetched",
@@ -118,17 +143,19 @@ module.exports.SearchUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports.GetMyDetails = catchAsync(async(req, res, next) =>{
+module.exports.GetMyDetails = catchAsync(async (req, res, next) => {
   // console.log("the getDetails endpoint")
   const myEmail = req.user.email;
   const email = req.body.email;
   // console.log(email)
-  const user = await User.findOne({email}).select("-password");
-  if(!user){
+  const user = await User.findOne({ email }).select("-password");
+  if (!user) {
     return next(new AppError("User has not been found", 404));
   }
-  if (myEmail != user.email){
-    return next(new AppError("Not same user, can not show you details of another", 404));
+  if (myEmail != user.email) {
+    return next(
+      new AppError("Not same user, can not show you details of another", 404)
+    );
   }
   return res.status(200).json({
     status: "ok",
@@ -136,4 +163,4 @@ module.exports.GetMyDetails = catchAsync(async(req, res, next) =>{
     message: "Your account has been found succesfully",
     users: user,
   });
-})
+});

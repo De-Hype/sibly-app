@@ -2,11 +2,9 @@ const jwt = require("jsonwebtoken");
 const AppError = require("../errors/AppError");
 
 function VerifyToken(req, res, next) {
-    // const header = req.headers;
-    // console.log(header)
+    
   const token = req.headers.authorization.split(" ")[1];
-//   console.log(token);
-  
+ 
   if (!token) {
     return next(new AppError("Invalid token, Unauthorized", 401));
   }

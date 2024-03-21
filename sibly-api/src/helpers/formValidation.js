@@ -15,7 +15,16 @@ const SignInSchema = Joi.object({
     password:Joi.string().min(6).max(30).required().label("Password"),
 })
 
+const UpdateUserSchema = Joi.object({
+    username:Joi.string().min(7).label("Username"),
+    email:Joi.string().email().label("Email"),
+    password:Joi.string().min(6).max(30).label("Password"),
+    
+    confirmPassword:Joi.string().min(6).max(30).label("Confirm Password")
+})
+
 
 
 exports.ValidateSignUp= validator(SignUpSchema);
 exports.ValidateSignIn = validator(SignInSchema);
+exports.ValidateUpdateUser = validator(UpdateUserSchema);

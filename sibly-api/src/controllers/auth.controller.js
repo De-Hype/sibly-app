@@ -47,6 +47,7 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
 module.exports.SignIn = catchAsync(async (req, res, next) => {
   const { error, value } = ValidateSignIn(req.body);
   if (error) {
+    console.log(error)
     return next(new AppError(error.message, 402));
   }
 

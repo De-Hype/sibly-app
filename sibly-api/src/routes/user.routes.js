@@ -12,13 +12,13 @@ const {
 
 const router = require("express").Router();
 
-router.get("/all-users", VerifyToken, GetAllUsers);
+router.get("/all-users",  GetAllUsers);
 router.get("/single-user/:id", VerifyToken, GetSingleUser);
 router.post("/my-details", VerifyToken, GetMyDetails);
 router.get("/search-friend/:id", VerifyToken, SearchFriends);
 router.get("/search-users", VerifyToken, SearchUsers);
 router.patch("/add-friend", VerifyToken, AddFriend);
 router.delete("/delete-account/:id", VerifyToken, DeleteUser);
-router.put("/update-user/:id", VerifyToken, UpdateUser);
+router.put("/update-user", VerifyToken, UpdateUser);
 
 module.exports = router;
