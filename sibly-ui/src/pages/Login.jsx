@@ -47,6 +47,7 @@ const Login = () => {
     }
   }
   const GoogleOauthLogin =()=>{
+   
     toast.info("Google Oauth is coming soon")
   }
   const GithubOauthLogin =()=>{
@@ -114,14 +115,14 @@ const Login = () => {
           <button
             className="text-sm outline-none cursor-pointer py-2 bg-blue-500 rounded-xl text-white hover:bg-blue-300 transition"
             type="button"
-            onclick={GoogleOauthLogin}
+            onClick={GoogleOauthLogin}
           >
             Log in with Google
           </button>
           <button
             className="text-sm outline-none cursor-pointer py-2 bg-black rounded-xl text-white hover:bg-slate-700 transition"
             type="button"
-            onclick={GithubOauthLogin}
+            onClick={GithubOauthLogin}
           >
             Log in with Github
           </button>

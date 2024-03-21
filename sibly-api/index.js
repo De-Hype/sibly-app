@@ -11,8 +11,9 @@ const userRoutes = require("./src/routes/user.routes");
 const chatRoutes = require("./src/routes/chat.routes");
 const GlobalErrorHandler = require("./src/errors/errorHandler");
 const AppError = require("./src/errors/AppError");
+const { app, server } = require("./src/socket/server");
 
-const app = express();
+
 
 process.on("uncaughtException", (err) => {
   console.log(err.name, err.message);
@@ -29,7 +30,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     saveUnintialized: false,
     resave: false,
-  store:  mongoStore.create({mongoUrl: process.env.DB_URI}),
+  //store:  mongoStore.create({mongoUrl: process.env.DB_URI}),
     cookie: {
       httpOnly:true,
       sameSite:"none",
@@ -54,7 +55,7 @@ app.use(GlobalErrorHandler);
 const port = process.env.PORT || 7070;
 
 Connect().then(() => {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Server runing on ${port}`);
   });
 });

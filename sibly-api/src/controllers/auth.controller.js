@@ -29,6 +29,7 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
     lastActive: new Date(),
     friends: [],
     profilePic: "",
+    googleId:null,
   });
 
   return res.status(202).json({
@@ -100,6 +101,7 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
 });
 
 
+
 module.exports.CheckIfLoggedIn = catchAsync(async (req, res, next) => {
   const user = req.session.account;
   const userid = req.sessionID; 
@@ -133,3 +135,7 @@ module.exports.LogOut = catchAsync(async (req, res, next) => {
            message: "User has  logged out",
          });
 });
+
+module.exports.GoogleRedirect = catchAsync(async (req, res, next) => {
+  
+})

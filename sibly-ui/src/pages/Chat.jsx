@@ -9,6 +9,7 @@ import { showFriendsDisplay, showFriendsHide } from "../redux/actionSlice";
 const Chat = () => {
   const show = useSelector((state) => state.action.showFriends);
   const dispatch = useDispatch();
+  //Add Websocket
   
   return (
     <div className="h-screen w-full">

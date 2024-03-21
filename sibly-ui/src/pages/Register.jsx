@@ -41,10 +41,10 @@ const Register = () => {
     }
   };
   
-  const GoogleOauthLogin =()=>{
+  const GoogleOauthRegister =()=>{
     toast.info("Google Oauth is coming soon")
   }
-  const GithubOauthLogin =()=>{
+  const GithubOauthRegister =()=>{
     toast.info("Github Oauth is coming soon")
   }
 
@@ -166,14 +166,14 @@ const Register = () => {
           <button
             className="text-sm outline-none cursor-pointer py-2 bg-blue-500 rounded-xl text-white hover:bg-blue-300 transition"
             type="button"
-            onclick={GoogleOauthLogin}
+            onClick={GoogleOauthRegister}
           >
             Register with Google
           </button>
           <button
             className="text-sm outline-none cursor-pointer py-2 bg-black rounded-xl text-white hover:bg-slate-700 transition"
             type="button"
-            onclick={GithubOauthLogin}
+            onClick={GithubOauthRegister}
           >
             Register with Github
           </button>

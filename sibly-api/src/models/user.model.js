@@ -30,7 +30,18 @@ const userSchema = new mongoose.Schema({
     profilePic:{
         type:String,
         default:null
+    },
+    googleId:{
+        type:String,
+        unique:true,
+        default:""
+    },
+    githubId:{
+        type:String,
+        unique:true,
+        default:""
     }
+    
 }, {timestamps:true})
 
 const User = mongoose.model("user", userSchema);
