@@ -23,7 +23,8 @@ const Login = () => {
      
       if (result.data.success == "logged") {
         Cookies.set("sibly_user", result.data.token, {expires:1})
-      localStorage.setItem("user", JSON.stringify(result.data.account));
+        
+      localStorage.setItem("sibly_user", JSON.stringify(result.data.account));
        //Set to store the token client side
 
         toast.success("User has logged in succesfully");

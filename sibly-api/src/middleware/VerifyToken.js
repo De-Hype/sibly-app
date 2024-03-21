@@ -2,8 +2,11 @@ const jwt = require("jsonwebtoken");
 const AppError = require("../errors/AppError");
 
 function VerifyToken(req, res, next) {
-  const token = req.headers.Authorization && req.headers.Authorization.split(" ")[1];
-  console.log(token)
+    // const header = req.headers;
+    // console.log(header)
+  const token = req.headers.authorization.split(" ")[1];
+//   console.log(token);
+  
   if (!token) {
     return next(new AppError("Invalid token, Unauthorized", 401));
   }
@@ -13,7 +16,7 @@ function VerifyToken(req, res, next) {
     };
     // console.log(decoded)
     req.user = decoded;
-    console.log(req.user)
+    
     next()
   }); 
 }

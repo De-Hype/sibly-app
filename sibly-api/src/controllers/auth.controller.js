@@ -62,7 +62,7 @@ module.exports.SignIn = catchAsync(async (req, res, next) => {
   if (!isPasswordMatch) {
     return next(new AppError("Incorrect login details", 400));
   }
- 
+
 
   //Set up the session stuff here
 
@@ -112,15 +112,23 @@ module.exports.CheckIfLoggedIn = catchAsync(async (req, res, next) => {
 });
 
 module.exports.LogOut = catchAsync(async (req, res, next) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return next(new AppError("Error logging user out ", 500));
-    } else {
-      res.status(202).json({
-        status: "ok",
-        success: "out",
-        message: "User has  logged out",
-      });
-    }
-  });
+  const name = req.user.name
+  //If we are using session
+  // req.session.destroy((err) => {
+  //   if (err) {
+  //     return next(new AppError("Error logging user out ", 500));
+  //   } else {
+  //    return  res.status(202).json({
+  //       status: "ok",
+  //       success: "out",
+  //       message: "User has  logged out",
+  //     });
+  //   }
+  // });
+  console.log(`A user with the name "${name}" has just logged out`)
+  res.status(202).json({
+           status: "ok",
+           success: "out",
+           message: "User has  logged out",
+         });
 });

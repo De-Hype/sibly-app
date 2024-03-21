@@ -5,18 +5,26 @@ import Header from "../Components/Header";
 import unknownUser from "../assets/unknownUser.jpeg";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { API } from "../utils/server";
 
 const Profile = () => {
+  const [email, setEmail] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmpassword, setConfirmPassword] = useState(null);
+  const account = JSON.parse( localStorage.getItem("sibly_user"));
   const token = Cookies.get("sibly_user");
+  console.log(token);
   const navigate = useNavigate();
+
   const handleUpdateAccount = async (e) => {
     e.preventDefault();
     try {
     } catch (err) {
       console.error(err);
+      toast.error("Error occured trying to update account");
     }
   };
   const handleDeleteAccount = async () => {
@@ -27,18 +35,17 @@ const Profile = () => {
   };
   const handleLogOut = async () => {
     try {
-      const result = await axios.get(`${API}/auth/verify-login`, {headers:{
-        Authorization:`Bearer ${token}`
-      }});
-     if (result.data.success == "out") {
-        localStorage.removeItem("user");
-        //Set to clear the token
-        Cookies.remove("sibly_user")
+      const result = await axios.get(`${API}/auth/sign-out`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (result.data.success == "out") {
+        localStorage.clear("sibly_user");
+        Cookies.remove("sibly_user");
         toast.info("User has logged out succesfully");
         return navigate("/login");
-       
-        
-        
       }
     } catch (err) {
       toast.error("An error occured while logging out user, please retry");
@@ -46,15 +53,31 @@ const Profile = () => {
     }
   };
   const handleFetchAccountDetails = async () => {
+    console.log(account.email)
     try {
+      const result = await axios.post(
+        `${API}/user/my-details`,{
+          email: account.email,},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+          
+        },
+        
+      );
+      if (result.data.success == "found") {
+        setEmail(result.data.users.email);
+        setUsername(result.data.users.username)
+      }
     } catch (err) {
       console.error(err);
+      toast.info("An error occured while fetching the user details");
     }
   };
   useEffect(() => {
     handleFetchAccountDetails();
-
-    return () => {};
+   
   }, []);
 
   return (
@@ -77,6 +100,8 @@ const Profile = () => {
               placeholder="New Email"
               className="text-sm outline-none rounded-xl w-full border px-3 py-2"
               id="email"
+              defaultValue={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="text"
@@ -84,6 +109,8 @@ const Profile = () => {
               placeholder="New Username"
               className="text-sm outline-none rounded-xl w-full border px-3 py-2"
               id="username"
+              defaultValue={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <input
               type="password"
@@ -91,13 +118,17 @@ const Profile = () => {
               placeholder="New password"
               className="text-sm outline-none rounded-xl w-full border px-3 py-2"
               id="password"
+              
+              onChange={(e) => setPassword(e.target.value)}
             />
             <input
               type="password"
-              name="password"
+              name="confirmPassword"
               placeholder="Confirm New password"
               className="text-sm outline-none rounded-xl w-full  border px-3 py-2"
               id="confirm-password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              
             />
             <input
               onClick={handleUpdateAccount}

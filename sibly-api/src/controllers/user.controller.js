@@ -119,8 +119,10 @@ module.exports.SearchUsers = catchAsync(async (req, res, next) => {
 });
 
 module.exports.GetMyDetails = catchAsync(async(req, res, next) =>{
+  // console.log("the getDetails endpoint")
   const myEmail = req.user.email;
   const email = req.body.email;
+  // console.log(email)
   const user = await User.findOne({email}).select("-password");
   if(!user){
     return next(new AppError("User has not been found", 404));
