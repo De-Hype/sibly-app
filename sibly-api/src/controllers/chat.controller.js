@@ -5,6 +5,7 @@ const catchAsync = require("../errors/catchAsync");
 const encryptMessage = require("../helpers/messageEncryption");
 const Conversation = require("../models/conversation.model");
 const Message = require("../models/message.model");
+const { getReceiverSocketId, io } = require("../socket/server");
 
 
 
@@ -14,11 +15,11 @@ module.exports.SendMessage = catchAsync(async (req, res, next) => {
   const senderId = req.session.user.id;
 
   let conversation = await Conversation.findOne({
-    particapants: { $all: [senderId, receiverId] },
+    participants: { $all: [senderId, receiverId] },
   });
   if (!conversation) {
     conversation = await Conversation.create({
-      particapants: [senderId, receiverId],
+      participants: [senderId, receiverId],
     });
   }
  const encryptedMessage = encryptMessage(message)
@@ -33,6 +34,10 @@ module.exports.SendMessage = catchAsync(async (req, res, next) => {
   await Promise.all([conversation.save(), newMessage.save()]);
 
   //SocketIo stuff is to go in here;
+  const receiverSocketId = getReceiverSocketId(receiverId);
+  if(receiverSocketId){
+    io.to(receiverId).emit("newMessage", newMessage);
+  }
   
 
   return res.status(201).json({

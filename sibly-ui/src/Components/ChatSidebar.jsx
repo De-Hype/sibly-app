@@ -9,10 +9,12 @@ import { SlOptionsVertical } from "react-icons/sl";
 import { useSelector, useDispatch } from "react-redux";
 import ChatBoxes from "./ChatBoxes";
 import ChatBoxSender from "./ChatBoxSender";
-import { useState } from "react";
-import { setMessageInput } from "../redux/chatSlice";
+import { useState, useEffect } from "react";
+import { setMessageInput, setOnlineUsers } from "../redux/chatSlice";
+import io from "socket.io-client";
 const ChatSidebar = () => {
   const [input, setInput] = useState("")
+ 
   let show = useSelector((state) => state.action.showFriends);
   const selectedUser = useSelector((state) => state.chat.selectedUser);
   const dispatch = useDispatch();
@@ -25,6 +27,31 @@ const ChatSidebar = () => {
   if (width>840){
     show = false
   }
+  const person = 10
+  useEffect(() => {
+    const socket = io("http://localhost:8080", {
+      query:{
+        userId:person,
+      }
+    });
+     socket.on("connect", ()=>{
+      console.log("Connected to the server")
+     })
+     socket.on("disconnect", ()=>{
+      console.log("Disonnected from the server")
+     })
+     socket.on("newMessage", (message)=>{
+      console.log(message)
+     });
+     socket.on("getOnlineUsers",(onlineUsers) =>{
+      dispatch(setOnlineUsers(onlineUsers))
+      console.log(onlineUsers)
+     })
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [person]);
   
   return (
     <section className={!show ? "w-3/4 tab:w-full h-full flex tab:overflow-y-hidden flex-col gap-2": "hidden"}>

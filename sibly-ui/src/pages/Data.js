@@ -3,7 +3,7 @@ export const Data = [
         name:"My Sunlight",
         message:"Do you know i love you",
         time:"10:45 AM",
-        id:10
+        id:"10"
     },
     {
         name:"Sufficient White",

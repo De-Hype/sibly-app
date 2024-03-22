@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   selectedUser: null,
   messageInput: "",
+  onlineUsersList:[],
 };
 
 export const chatSlice = createSlice({
@@ -14,9 +15,12 @@ export const chatSlice = createSlice({
     },
     setMessageInput:(state, action) =>{
         state.messageInput = action.payload;
+    },
+    setOnlineUsers:(state, action)=>{
+      state.onlineUsersList = action.payload;
     }
   },
 });
 //If we click on a chat, we want to
-export const { selectUser, setMessageInput } = chatSlice.actions;
+export const { selectUser, setMessageInput, setOnlineUsers } = chatSlice.actions;
 export default chatSlice.reducer;

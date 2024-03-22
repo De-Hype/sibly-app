@@ -6,22 +6,17 @@ import { TbFriends, TbFriendsOff } from "react-icons/tb";
 import { useSelector, useDispatch } from "react-redux";
 import { showFriendsDisplay, showFriendsHide } from "../redux/actionSlice";
 import { useEffect, useState } from "react";
-import io from "socket.io-client";
 import NoUserSelected from "../Components/NoUserSelected";
 
 const Chat = () => {
   
   const selectedUser = useSelector((state) => state.chat.selectedUser);
   const input = useSelector((state) => state.chat.messageInput);
-console.log(input)
-  //const socket = io.connect("http://localhost:8080");
+  console.log(input);
+  
   const show = useSelector((state) => state.action.showFriends);
   const dispatch = useDispatch();
-  useEffect(() => {
-    // socket.on()
-
-    return () => {};
-  }, []);
+  
 
   //Add Websocket
 
