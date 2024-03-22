@@ -30,8 +30,8 @@ function App() {
           <Route path="/" exact element={<LandingPage />  } />
           <Route path="/login" exact element={ <Login />} />
           <Route path="/register" exact element={ <Register />} />
-          <Route element = { <PrivateRoutes />} >
           <Route path="/chat" exact element={<Chat />} />
+          <Route element = { <PrivateRoutes />} >
           <Route path="/profile" exact element={  <Profile />  } />
           <Route path="/call-logs" exact element={ <CallLogs />} />
           <Route path="/friend-request" exact element={<FriendRequest />} />

@@ -5,10 +5,24 @@ import UserSideBar from "../Components/UserSideBar";
 import { TbFriends, TbFriendsOff } from "react-icons/tb";
 import { useSelector, useDispatch } from "react-redux";
 import { showFriendsDisplay, showFriendsHide } from "../redux/actionSlice";
+import { useEffect, useState } from "react";
+import io from "socket.io-client";
+
 
 const Chat = () => {
+  const [messageInput, setMessageInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  //const socket = io.connect("http://localhost:8080");
   const show = useSelector((state) => state.action.showFriends);
   const dispatch = useDispatch();
+  useEffect(() => {
+    // socket.on()
+  
+    return () => {
+      
+    }
+  }, [])
+  
   //Add Websocket
   
   return (

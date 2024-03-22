@@ -12,22 +12,26 @@ import ChatBoxSender from "./ChatBoxSender";
 const ChatSidebar = () => {
   
   let show = useSelector((state) => state.action.showFriends);
+  const selectedUser = useSelector((state) => state.chat.selectedUser);
+  console.log(selectedUser)
+  
   const width = window.innerWidth;
   
   if (width>840){
     show = false
   }
+  
   return (
     <section className={!show ? "w-3/4 tab:w-full h-full flex tab:overflow-y-hidden flex-col gap-2": "hidden"}>
       <aside className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
             className="rounded-full h-14 w-14"
-            src={unknownUser}
-            alt="A profile image of the zenchat chat application user, David Hype ."
+            src={selectedUser.image || unknownUser}
+            alt={`A profile image of the zenchat chat application user, ${selectedUser.name}.`}
           />
           <div className="flex flex-col gap-1">
-            <h3 className="font-bold cursor-auto">David Hype</h3>
+            <h3 className="font-bold cursor-auto">{selectedUser.name}</h3>
             <div className="flex  gap-1">
               <GoDotFill className="text-green-500 font-bold" />
               <p className="font-light text-xs self-end">Active now</p>
