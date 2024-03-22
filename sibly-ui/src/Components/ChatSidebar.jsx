@@ -6,16 +6,21 @@ import { FaPlus } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { IoCall } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ChatBoxes from "./ChatBoxes";
 import ChatBoxSender from "./ChatBoxSender";
+import { useState } from "react";
+import { setMessageInput } from "../redux/chatSlice";
 const ChatSidebar = () => {
-  
+  const [input, setInput] = useState("")
   let show = useSelector((state) => state.action.showFriends);
   const selectedUser = useSelector((state) => state.chat.selectedUser);
+  const dispatch = useDispatch();
   console.log(selectedUser)
-  
   const width = window.innerWidth;
+  const handleMessageSubmit =() =>{
+    dispatch(setMessageInput(input))
+  }
   
   if (width>840){
     show = false
@@ -51,7 +56,7 @@ const ChatSidebar = () => {
 
        
       </aside>
-      <aside className="self-end relative px-4 shadow-sm py-3 w-full border flex items-center rounded-2xl">
+      <form onSubmit={handleMessageSubmit} className="self-end relative px-4 shadow-sm py-3 w-full border flex items-center rounded-2xl">
         <span className=" cursor-pointer absolute transition hover:bg-white hover:border  hover:border-blue-600 rounded-full px-3 py-3 left-2 bg-blue-700">
           <FaPlus className="text-white transition hover:text-blue-700" />
         </span>
@@ -60,11 +65,12 @@ const ChatSidebar = () => {
           name=""
           id=""
           placeholder="Send message..."
+          onChange={(e)=> {setInput(e.target.value)}}
         ></textarea>
-        <span className="cursor-pointer transition hover:bg-white hover:border hover:border-blue-600 absolute rounded-full px-3 py-3  right-2 bg-blue-700">
+        <span onClick={handleMessageSubmit} className="cursor-pointer transition hover:bg-white hover:border hover:border-blue-600 absolute rounded-full px-3 py-3  right-2 bg-blue-700">
           <IoSend className="text-white transition hover:text-blue-700" />
         </span>
-      </aside>
+      </form>
     </section> 
 
   );
