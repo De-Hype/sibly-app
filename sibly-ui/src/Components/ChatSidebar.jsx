@@ -2,56 +2,29 @@
 import unknownUser from "../assets/unknownUser.jpeg";
 
 import { GoDotFill } from "react-icons/go";
-import { FaPlus } from "react-icons/fa";
-import { IoSend } from "react-icons/io5";
+
 import { IoCall } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
 import { useSelector, useDispatch } from "react-redux";
 import ChatBoxes from "./ChatBoxes";
 import ChatBoxSender from "./ChatBoxSender";
-import { useState, useEffect } from "react";
-import { setMessageInput, setOnlineUsers } from "../redux/chatSlice";
-import io from "socket.io-client";
+// import { useState, useEffect } from "react";
+// import { setMessageInput, setOnlineUsers } from "../redux/chatSlice";
+// import io from "socket.io-client";
+import MessageInput from "./MessageInput";
 const ChatSidebar = () => {
-  const [input, setInput] = useState("")
- 
+  
   let show = useSelector((state) => state.action.showFriends);
   const selectedUser = useSelector((state) => state.chat.selectedUser);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   console.log(selectedUser)
   const width = window.innerWidth;
-  const handleMessageSubmit =() =>{
-    dispatch(setMessageInput(input))
-  }
+  
   
   if (width>840){
     show = false
   }
-  const person = 10
-  useEffect(() => {
-    const socket = io("http://localhost:8080", {
-      query:{
-        userId:person,
-      }
-    });
-     socket.on("connect", ()=>{
-      console.log("Connected to the server")
-     })
-     socket.on("disconnect", ()=>{
-      console.log("Disonnected from the server")
-     })
-     socket.on("newMessage", (message)=>{
-      console.log(message)
-     });
-     socket.on("getOnlineUsers",(onlineUsers) =>{
-      dispatch(setOnlineUsers(onlineUsers))
-      console.log(onlineUsers)
-     })
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [person]);
+  
   
   return (
     <section className={!show ? "w-3/4 tab:w-full h-full flex tab:overflow-y-hidden flex-col gap-2": "hidden"}>
@@ -83,21 +56,7 @@ const ChatSidebar = () => {
 
        
       </aside>
-      <form onSubmit={handleMessageSubmit} className="self-end relative px-4 shadow-sm py-3 w-full border flex items-center rounded-2xl">
-        <span className=" cursor-pointer absolute transition hover:bg-white hover:border  hover:border-blue-600 rounded-full px-3 py-3 left-2 bg-blue-700">
-          <FaPlus className="text-white transition hover:text-blue-700" />
-        </span>
-        <textarea
-          className="w-full font-semibold text-sm px-11 py-1 min-h-20 outline-none resize-none"
-          name=""
-          id=""
-          placeholder="Send message..."
-          onChange={(e)=> {setInput(e.target.value)}}
-        ></textarea>
-        <span onClick={handleMessageSubmit} className="cursor-pointer transition hover:bg-white hover:border hover:border-blue-600 absolute rounded-full px-3 py-3  right-2 bg-blue-700">
-          <IoSend className="text-white transition hover:text-blue-700" />
-        </span>
-      </form>
+      <MessageInput />
     </section> 
 
   );

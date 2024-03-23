@@ -9,6 +9,7 @@ const Connect = require("./src/config/db");
 const authRoutes = require("./src/routes/auth.routes");
 const userRoutes = require("./src/routes/user.routes");
 const chatRoutes = require("./src/routes/chat.routes");
+const friendRequestRoutes = require("./src/routes/friendRequest.routes");
 const GlobalErrorHandler = require("./src/errors/errorHandler");
 const AppError = require("./src/errors/AppError");
 const { app, server } = require("./src/socket/server");
@@ -40,6 +41,7 @@ app.use(
 );
 app.use("/v1/api/auth", authRoutes);
 app.use("/v1/api/user", userRoutes);
+app.use("/v1/api/friend", friendRequestRoutes);
 app.use("/v1/api/chat", chatRoutes);
 
 app.all("*", (req, res, next) => {

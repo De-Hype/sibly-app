@@ -7,7 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { showFriendsDisplay, showFriendsHide } from "../redux/actionSlice";
 import { useEffect, useState } from "react";
 import NoUserSelected from "../Components/NoUserSelected";
-
+import { setOnlineUsers } from "../redux/chatSlice";
+import io from "socket.io-client";
 const Chat = () => {
   
   const selectedUser = useSelector((state) => state.chat.selectedUser);
@@ -17,8 +18,32 @@ const Chat = () => {
   const show = useSelector((state) => state.action.showFriends);
   const dispatch = useDispatch();
   
-
+  const person =  JSON.parse(localStorage.getItem("sibly_user"));
   //Add Websocket
+  useEffect(() => {
+    const socket = io("http://localhost:8080", {
+      query:{
+        userId:person.id,
+      }
+    });
+     socket.on("connect", ()=>{
+      console.log("Connected to the server")
+     })
+     socket.on("disconnect", ()=>{
+      console.log("Disonnected from the server")
+     })
+     socket.on("newMessage", (message)=>{
+      console.log(message)
+     });
+     socket.on("getOnlineUsers",(onlineUsers) =>{
+      dispatch(setOnlineUsers(onlineUsers))
+      console.log(onlineUsers)
+     })
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [person]);
 
   return (
     <div className="h-screen w-full">

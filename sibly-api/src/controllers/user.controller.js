@@ -71,17 +71,34 @@ module.exports.DeleteUser = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports.AddFriend = catchAsync(async (req, res, next) => {
-  // let { name, email, username, password } = req.body;
-  //We will check for that users id and also check if the ID mathes with the one we get on the session
-  //If they actually match, we go ahead and delete the account, and then destroy the session
 
-  return res.status(202).json({
+module.exports.FetchNonFriends = catchAsync(async (req, res, next) => {
+  // console.log(req.session.account)
+  const userId = req.user.id
+  const nonFriends = await User.aggregate([
+    {$match :{_id:{$ne:userId }}},
+    {
+      $lookup:{
+        from:"User",
+        let:{friendId:"$_id"},
+        pipeline:[
+          {$match : {$expr :{$eq:["$$friendId", {$toString:userId}]}}}
+        ],
+        as:"isFriend"
+      }
+    }, {$match:{"isFriend":[]}},
+    {$project:{isFriend:0}}
+  ])
+
+
+  return res.status(200).json({
     status: "ok",
-    success: "added",
-    message: "Friend added succesfully",
+    success: "fetched",
+    message: "Users fetched succesfully",
+    nonFriends:nonFriends
   });
 });
+
 
 module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
   // console.log(req.session.account)
@@ -164,3 +181,5 @@ module.exports.GetMyDetails = catchAsync(async (req, res, next) => {
     users: user,
   });
 });
+
+

@@ -27,19 +27,25 @@ const userSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
     }],
+    friendRequestSent:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }],
+    friendRequestGotten:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }],
     profilePic:{
         type:String,
         default:null
     },
     googleId:{
         type:String,
-        unique:true,
-        default:""
+        default:null
     },
     githubId:{
         type:String,
-        unique:true,
-        default:""
+        default:null
     }
     
 }, {timestamps:true})

@@ -18,7 +18,7 @@ const Header = () => {
         </Link>
         <Link
           className="text-black transition hover:text-blue-700"
-          to="/chat/123"
+          to="/chat"
         >
           <BsChatSquareQuoteFill className="text-2xl" />
         </Link>

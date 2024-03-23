@@ -28,8 +28,9 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
     password: hashedPassword,
     lastActive: new Date(),
     friends: [],
-    profilePic: "",
-    googleId:null,
+    friendRequestSent:[],
+    friendRequestGotten:[],
+    profilePic: ""
   });
 
   return res.status(202).json({

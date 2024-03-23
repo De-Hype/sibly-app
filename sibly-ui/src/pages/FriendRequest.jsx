@@ -1,23 +1,48 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 
 import unknownUser from "../assets/unknownUser.jpeg";
 import { FaSearch } from "react-icons/fa";
 import { IoPersonAdd } from "react-icons/io5";
+import Cookies from "js-cookie";
 
 const FriendRequest = () => {
   const [search, setSearch] = useState("");
 
-  //Search components
-  //Messaged user components
-  //For the messaged user, it will have this =>
-  //image, {username, message}, activestatus
   const handleFriendAdd = (e) => {
     e.preventDefault();
     console.log(search);
   };
+  const token = Cookies.get("sibly_user");
+
+  useEffect(() => {
+    //Here, we will fetch for users that are not on my friend list.
+    const FetchUsers = async()=>{
+      try {
+        const result = await axios.get(
+          `${API}/user/my-details`,
+          
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (result.data.success == "found") {
+          setEmail(result.data.users.email);
+          setUsername(result.data.users.username);
+        }
+      } catch (err) {
+        console.error(err);
+        toast.info("An error occured while fetching the user details");
+      }
+    }
+  
+    
+  }, [])
+  
 
   return (
     <div className="h-screen ">
