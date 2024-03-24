@@ -49,7 +49,7 @@ const UserSideBar = () => {
             },
           }
         );
-        console.log(result)
+        
         if (result.data.success == "fetched") {
           //setEmail(result.data.users.email);
           setFriendList(result.data.user.friends);
@@ -89,12 +89,12 @@ const UserSideBar = () => {
         />
       </form>
       <aside className="">
-        {Data.map((users, index) => (
+        {FriendList?.map((users, index) => (
           <div
             key={index}
             onClick={() => handleUserClick(users)}
             className={`flex items-center justify-between transition px-2 cursor-pointer py-2 border-b hover:bg-slate-200 ${
-              selectedUser && selectedUser.id == users.id
+              selectedUser && selectedUser._id == users._id
                 ? "bg-slate-500"
                 : "bg-white"
             }`}
@@ -111,7 +111,7 @@ const UserSideBar = () => {
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
-              {onlineUsers.includes(users.id) && (
+              {onlineUsers.includes(users._id) && (
                 <GoDotFill className="text-green-500 font-bold" />
               )}
               <p className="font-light text-xs self-end">{users.time}</p>

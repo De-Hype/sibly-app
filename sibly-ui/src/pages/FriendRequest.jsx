@@ -21,7 +21,6 @@ const FriendRequest = () => {
   const navigate = useNavigate();
 
   const token = Cookies.get("sibly_user");
-  console.log(token)
   const handleNonFriendSearch = (e) => {
     e.preventDefault();
     console.log(search);
@@ -36,7 +35,7 @@ const FriendRequest = () => {
           },
         }
       );
-      console.log(result)
+      
       if (result.data.success == "sent") {
         //setEmail(result.data.users.email);
         toast.success("Friend request sent succesfully");
@@ -58,7 +57,7 @@ const FriendRequest = () => {
           },
         }
       );
-      console.log(result)
+      console.log(result);
       if (result.data.success == "added") {
         //setEmail(result.data.users.email);
         toast.success("Friend request accepted succesfully");
@@ -70,7 +69,6 @@ const FriendRequest = () => {
       toast.info("An error occured while accepting friend request");
     }
   };
-
 
   const handleUserClick = (users) => {
     dispatch(selectUser(users));
@@ -101,7 +99,7 @@ const FriendRequest = () => {
     };
     FetchNonFriends();
 
-    const FetchFriendRequestGotten = async () =>{
+    const FetchFriendRequestGotten = async () => {
       try {
         const result = await axios.get(
           `${API}/friend/get-received-request`,
@@ -114,7 +112,7 @@ const FriendRequest = () => {
         );
         if (result.data.success == "fetched") {
           //setEmail(result.data.users.email);
-          setFriendRequestGotten(result.data.requestGotten)
+          setFriendRequestGotten(result.data.requestGotten);
           //setNonFriendUsers(result.data.nonFriends);
         }
       } catch (err) {
@@ -125,106 +123,123 @@ const FriendRequest = () => {
     FetchFriendRequestGotten();
   }, [token]);
 
-  console.log(FriendRequestGotten)
-
   return (
-    <div className="min-screen ">
+    <div className="h-screen ">
       <Header />
-      <section className="h-3/4 my-3  py-2 px-4 sm:px-1  flex justify-center items-center gap-3">
-        <div className="flex flex-col gap-3 w-3/4 sm:w-full">
-        <section className="h-full overflow-y-auto border self-start flex flex-col gap-3 px-3 w-full  py-3 shadow">
-          <aside className="w-full">
-            <h3 className="text-center font-bold text-lg">
-              Accept Friend Request 
-            </h3>
-          </aside>
-          <aside className="w-full">
-            {FriendRequestGotten?.map((user, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between transition px-2 py-2 border-b hover:shadow"
-              >
-                <div className="flex items-center gap-1">
-                  <img
-                    className="rounded-full h-14 w-14"
-                    src={user?.profilePic || unknownUser}
-                    alt="A profile image of the zenchat chat application user, David Hype ."
-                  />
-                  <div className="flex flex-col gap-1">
-                    <h3 className="font-bold text-sm">{user?.name}</h3>
-                    <p className="text-xs font-">{user?.username}</p>
+      <section className="h-full my-3  py-2 px-4 sm:px-1  flex justify-center items-center gap-3">
+        <div className="flex flex-col h-full gap-3 w-3/4 sm:w-full">
+          <section className="h-full  overflow-y-auto border self-start flex flex-col gap-3 px-3 w-full  py-3 shadow">
+            <aside className="w-full ">
+              <h3 className="text-center font-bold text-lg">
+                Accept Friend Request
+              </h3>
+            </aside>
+              {FriendRequestGotten?.length > 0 ? (
+             
+                
+            <aside className="w-full ">
+                  {FriendRequestGotten?.map((user, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between transition px-2 py-2 border-b hover:shadow"
+                    >
+                      <div className="flex items-center gap-1">
+                        <img
+                          className="rounded-full h-14 w-14"
+                          src={user?.profilePic || unknownUser}
+                          alt="A profile image of the zenchat chat application user, David Hype ."
+                        />
+                        <div className="flex flex-col gap-1">
+                          <h3 className="font-bold text-sm">{user?.name}</h3>
+                          <p className="text-xs font-">{user?.username}</p>
+                        </div>
+                      </div>
+                      {showChatIcon ? (
+                        <>
+                          <IoChatbubbleEllipsesSharp
+                            onClick={() => handleUserClick(user)}
+                            className="text-blue-800 text-2xl cursor-pointer font-bold"
+                          />
+                        </>
+                      ) : (
+                        <FaUserCheck
+                          onClick={() => handleAcceptFriendRequest(user._id)}
+                          className="text-blue-800 text-2xl cursor-pointer font-bold"
+                        />
+                      )}
+                    </div>
+                  ))}
+                
+            </aside>
+          
+              ) : (
+                <div className="h-1/2 flex items-center justify-center">
+                  <div className="">
+                    <h3>No Friend Request Received</h3>
                   </div>
                 </div>
-                {showChatIcon ? (
-                  <>
-                    <IoChatbubbleEllipsesSharp
-                      onClick={() => handleUserClick(user)}
+              )}
+          </section>
+          <section className="h-full overflow-y-auto border self-start flex flex-col gap-3 px-3 w-full  py-2 shadow">
+            <form
+              onSubmit={handleNonFriendSearch}
+              className="border py-1 px-2 rounded relative flex items-center"
+            >
+              <input
+                onChange={(e) => setSearch(e.target.value)}
+                type="text"
+                name="search"
+                id="search"
+                placeholder="Add friend..."
+                className="pl-3 pr-8 w-full py-2 outline-none text-sm"
+              />
+              <FaSearch
+                className="absolute right-3 cursor-pointer"
+                onClick={handleNonFriendSearch}
+              />
+            </form>
+            {nonFriendUsers?.length > 0 ? 
+            <aside className="w-full h-full">
+              {nonFriendUsers?.map((user, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between transition px-2 py-2 border-b hover:shadow"
+                >
+                  <div className="flex items-center gap-1">
+                    <img
+                      className="rounded-full h-14 w-14"
+                      src={user?.profilePic || unknownUser}
+                      alt="A profile image of the zenchat chat application user, David Hype ."
+                    />
+                    <div className="flex flex-col gap-1">
+                      <h3 className="font-bold text-sm">{user?.name}</h3>
+                      <p className="text-xs font-">{user?.username}</p>
+                    </div>
+                  </div>
+                  {showChatIcon ? (
+                    <>
+                      <IoChatbubbleEllipsesSharp
+                        onClick={() => handleUserClick(user)}
+                        className="text-blue-800 text-2xl cursor-pointer font-bold"
+                      />
+                    </>
+                  ) : (
+                    <IoPersonAdd
+                      onClick={() => handleSendFriendRequest(user._id)}
                       className="text-blue-800 text-2xl cursor-pointer font-bold"
                     />
-                  </>
-                ) : (
-                  <FaUserCheck
-                    onClick={() => handleAcceptFriendRequest(user._id)}
-                    className="text-blue-800 text-2xl cursor-pointer font-bold"
-                  />
-                )}
-              </div>
-            ))}
-          </aside>
-        </section>
-        <section className="h-full overflow-y-auto border self-start flex flex-col gap-3 px-3 w-full  py-2 shadow">
-          <form
-            onSubmit={handleNonFriendSearch}
-            className="border py-1 px-2 rounded relative flex items-center"
-          >
-            <input
-              onChange={(e) => setSearch(e.target.value)}
-              type="text"
-              name="search"
-              id="search"
-              placeholder="Add friend..."
-              className="pl-3 pr-8 w-full py-2 outline-none text-sm"
-            />
-            <FaSearch
-              className="absolute right-3 cursor-pointer"
-              onClick={handleNonFriendSearch}
-            />
-          </form>
-          <aside className="w-full">
-            {nonFriendUsers?.map((user, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between transition px-2 py-2 border-b hover:shadow"
-              >
-                <div className="flex items-center gap-1">
-                  <img
-                    className="rounded-full h-14 w-14"
-                    src={user?.profilePic || unknownUser}
-                    alt="A profile image of the zenchat chat application user, David Hype ."
-                  />
-                  <div className="flex flex-col gap-1">
-                    <h3 className="font-bold text-sm">{user?.name}</h3>
-                    <p className="text-xs font-">{user?.username}</p>
+                  )}
+                </div>
+              ))} 
+                    </aside>
+              : <div className="h-1/2 flex items-center justify-center">
+                  <div className="">
+                    <h3>Lol...everybody is your friend</h3>
                   </div>
                 </div>
-                {showChatIcon ? (
-                  <>
-                    <IoChatbubbleEllipsesSharp
-                      onClick={() => handleUserClick(user)}
-                      className="text-blue-800 text-2xl cursor-pointer font-bold"
-                    />
-                  </>
-                ) : (
-                  <IoPersonAdd
-                    onClick={() => handleSendFriendRequest(user._id)}
-                    className="text-blue-800 text-2xl cursor-pointer font-bold"
-                  />
-                )}
-              </div>
-            ))}
-          </aside>
-        </section>
-                </div>
+              }
+          </section>
+        </div>
       </section>
       <Footer />
     </div>

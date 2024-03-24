@@ -80,10 +80,15 @@ module.exports.AcceptFriendRequest = catchAsync(async (req, res, next) => {
       new AppError("Failed because you are already this users friend", 400)
     );
   };
-  await reqSender.friendRequestSent.pull(id);
-  await reqReceiver.friendRequestGotten.pull(userId);
-  await reqSender.friends.push(id);
-  await reqReceiver.friends.push(userId);
+  
+   reqSender.friendRequestSent.pull(id);
+   reqSender.friendRequestGotten.pull(id);
+   reqReceiver.friendRequestGotten.pull(userId);
+   reqReceiver.friendRequestSent.pull(userId);
+  
+
+   reqSender.friends.push(id);
+ reqReceiver.friends.push(userId);
   await Promise.all([reqSender.save(), reqReceiver.save()]);
   return res.status(202).json({
     status: "ok",
