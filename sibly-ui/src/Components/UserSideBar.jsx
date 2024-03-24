@@ -1,21 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import unknownUser from "../assets/unknownUser.jpeg";
 import { FaSearch } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import { useSelector, useDispatch } from "react-redux";
-// import { SiTruenas } from "react-icons/si";
 import { Data } from "../pages/Data";
 import { selectUser } from "../redux/chatSlice";
+import { API } from "../utils/server";
+import { toast } from "sonner";
+import axios from "axios";
+import Cookies from "js-cookie";
+
 
 const UserSideBar = () => {
   const [search, setSearch] = useState("");
+  const [FriendList, setFriendList] = useState(null);
+
   const dispatch = useDispatch();
   let show = useSelector((state) => state.action.showFriends);
   const selectedUser = useSelector((state) => state.chat.selectedUser);
   const onlineUsers = useSelector((state) => state.chat.onlineUsersList);
 
   const width = window.innerWidth;
+  const token = Cookies.get("sibly_user");
 
   const handleFriendSearch = (e) => {
     e.preventDefault();
@@ -28,6 +35,33 @@ const UserSideBar = () => {
   const handleUserClick = (users) => {
     dispatch(selectUser(users));
   };
+
+  useEffect(() => {
+    //Here, we will fetch for users that are not on my friend list.
+    const FetchFriendList = async () => {
+      try {
+        const result = await axios.get(
+          `${API}/user/single-user`,
+
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(result)
+        if (result.data.success == "fetched") {
+          //setEmail(result.data.users.email);
+          setFriendList(result.data.user.friends);
+        }
+      } catch (err) {
+        console.error(err);
+        toast.info("An error occured while fetching the users");
+      }
+    };
+    FetchFriendList();
+    console.log(FriendList);
+  }, []);
 
   return (
     <section

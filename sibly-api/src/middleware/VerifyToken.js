@@ -12,8 +12,8 @@ function VerifyToken(req, res, next) {
     if (err) {
       return next(new AppError("Incorrect or expired token, please log in", 401));
     };
-    // console.log(decoded)
     req.user = decoded;
+    //console.log(req.user)
     
     next()
   }); 

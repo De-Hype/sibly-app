@@ -25,15 +25,15 @@ const userSchema = new mongoose.Schema({
     }, 
     friends:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"user"
     }],
     friendRequestSent:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"user"
     }],
     friendRequestGotten:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"user"
     }],
     profilePic:{
         type:String,

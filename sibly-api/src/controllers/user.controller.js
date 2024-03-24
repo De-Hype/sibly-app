@@ -75,20 +75,12 @@ module.exports.DeleteUser = catchAsync(async (req, res, next) => {
 module.exports.FetchNonFriends = catchAsync(async (req, res, next) => {
   // console.log(req.session.account)
   const userId = req.user.id
-  const nonFriends = await User.aggregate([
-    {$match :{_id:{$ne:userId }}},
-    {
-      $lookup:{
-        from:"User",
-        let:{friendId:"$_id"},
-        pipeline:[
-          {$match : {$expr :{$eq:["$$friendId", {$toString:userId}]}}}
-        ],
-        as:"isFriend"
-      }
-    }, {$match:{"isFriend":[]}},
-    {$project:{isFriend:0}}
-  ])
+  const currentUser = await User.findById(userId);
+  const currentUserFriends = [...currentUser.friends, ...currentUser.friendRequestGotten, ...currentUser.friendRequestSent] ;
+  
+  const nonFriends = await User.find({
+    _id:{$ne:userId, $nin:currentUserFriends},
+  }).select("-password");
 
 
   return res.status(200).json({
@@ -113,10 +105,14 @@ module.exports.GetAllUsers = catchAsync(async (req, res, next) => {
 });
 
 module.exports.GetSingleUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id).select("-password");
+  const user = await User.findById(req.user.id).select("-password").populate({
+    path:"friends",
+    select:"-password"
+  }).exec(); 
   if (!user) {
     return next(new AppError("User not found", 404));
-  }
+  };
+  console.log(user)
   return res.status(200).json({
     status: "ok",
     success: "fetched",
