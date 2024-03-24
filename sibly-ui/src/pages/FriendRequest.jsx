@@ -110,6 +110,7 @@ const FriendRequest = () => {
             },
           }
         );
+        console.log(result.data)
         if (result.data.success == "fetched") {
           //setEmail(result.data.users.email);
           setFriendRequestGotten(result.data.requestGotten);

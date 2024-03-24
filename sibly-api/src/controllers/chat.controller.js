@@ -2,6 +2,7 @@
 //We will have the message sending part
 
 const catchAsync = require("../errors/catchAsync");
+const decryptMessage = require("../helpers/messageDecryption");
 const encryptMessage = require("../helpers/messageEncryption");
 const Conversation = require("../models/conversation.model");
 const Message = require("../models/message.model");
@@ -12,22 +13,25 @@ const { getReceiverSocketId, io } = require("../socket/server");
 module.exports.SendMessage = catchAsync(async (req, res, next) => {
   const message = req.body.message;
   const { id: receiverId } = req.params;
-  const senderId = req.session.user.id;
+  const senderId = req.user.id;
 
   let conversation = await Conversation.findOne({
     participants: { $all: [senderId, receiverId] },
-  });
+  }); 
   if (!conversation) {
     conversation = await Conversation.create({
       participants: [senderId, receiverId],
     });
   }
- const encryptedMessage = encryptMessage(message)
+ //const encryptedMessage = await encryptMessage(message);
+ //console.log(encryptedMessage);
   const newMessage = await new Message({
     senderId,
     receiverId,
-    message:encryptedMessage,
+    message:message,
   });
+  //const decryptedMessage = await decryptMessage(encryptedMessage);
+  //console.log(decryptedMessage)
   if (newMessage) {
     conversation.messages.push(newMessage._id);
   }
@@ -50,7 +54,7 @@ module.exports.SendMessage = catchAsync(async (req, res, next) => {
 
 module.exports.GetMessage = catchAsync(async (req, res, next) => {
   const { id: userToChatId } = req.params;
-  const senderId = req.session.user.id;
+  const senderId = req.user.id;
 
   const conversation = await Conversation.findOne({
     particapants: { $all: [senderId, userToChatId] },

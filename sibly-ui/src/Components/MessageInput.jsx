@@ -1,11 +1,12 @@
 
-import {  useDispatch } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { setMessageInput } from "../redux/chatSlice";
 import useSendMessage from "../hooks/useSendMessage";
 const MessageInput = () => {
+  const selectedUser = useSelector((state) => state.chat.selectedUser);
     const [input, setInput] = useState("")
     const dispatch = useDispatch();
     const {sendMessage} = useSendMessage()
@@ -13,7 +14,7 @@ const MessageInput = () => {
         e.preventDefault();
         if(!input) return;
         dispatch(setMessageInput(input))
-        await sendMessage(input)
+        await sendMessage(input, selectedUser._id)
       }
   return (
     <form onSubmit={handleMessageSubmit} className="self-end relative px-4 shadow-sm py-3 w-full border flex items-center rounded-2xl">

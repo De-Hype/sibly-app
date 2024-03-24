@@ -1,19 +1,11 @@
+import crypto from "crypto";
 const decryptMessage = async (encryptedMessage) => {
   try {
-    const iv = "dhhdhd";
-    const key = "dhddh";
-    const encryptedData = Uint8Array.from(atob(encryptedMessage), (c) =>
-      c.charCodeAt(0)
-    );
-    const decryptedData = await crypto.subtle.decrypt(
-      {
-        name: "AES-GCM",
-        iv: iv,
-      },
-      key,
-      encryptedData
-    );
-    const decryptedMessage = new TextDecoder().decode(decryptedData);
+    const iv = "apsqnqcDAuSeVme58jTwrg==";
+    const key = "doMuNaK02Ly8YQvFUJSAInrAnpmsEDoPO7gxhRJfTzI=";
+    const decipher = crypto.createDecipher("aes-256-gcm", key, iv);
+    let decryptedMessage = decipher.update(encryptedMessage, "base64", "utf8");
+    decryptedMessage += decipher.final("utf8");
     return decryptedMessage;
   } catch (err) {
     console.log(err);

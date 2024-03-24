@@ -12,6 +12,7 @@ import ChatBoxSender from "./ChatBoxSender";
 // import { setMessageInput, setOnlineUsers } from "../redux/chatSlice";
 // import io from "socket.io-client";
 import MessageInput from "./MessageInput";
+import { useEffect } from "react";
 const ChatSidebar = () => {
   
   let show = useSelector((state) => state.action.showFriends);
@@ -24,6 +25,12 @@ const ChatSidebar = () => {
   if (width>840){
     show = false
   }
+  useEffect(() => {
+    
+  
+    
+  }, [])
+  
   
   
   return (
