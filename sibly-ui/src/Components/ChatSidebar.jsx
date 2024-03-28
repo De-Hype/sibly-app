@@ -1,4 +1,3 @@
-
 import unknownUser from "../assets/unknownUser.jpeg";
 
 import { GoDotFill } from "react-icons/go";
@@ -12,29 +11,62 @@ import ChatBoxSender from "./ChatBoxSender";
 // import { setMessageInput, setOnlineUsers } from "../redux/chatSlice";
 // import io from "socket.io-client";
 import MessageInput from "./MessageInput";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { API } from "../utils/server";
+import axios from "axios";
 const ChatSidebar = () => {
-  
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState(null);
   let show = useSelector((state) => state.action.showFriends);
   const selectedUser = useSelector((state) => state.chat.selectedUser);
+  const onlineUsers = useSelector((state) => state.chat.onlineUsersList);
+
+  const token = Cookies.get("sibly_user");
   // const dispatch = useDispatch();
-  console.log(selectedUser)
+  console.log(selectedUser);
   const width = window.innerWidth;
-  
-  
-  if (width>840){
-    show = false
+
+  if (width > 840) {
+    show = false;
   }
   useEffect(() => {
-    
-  
-    
-  }, [])
-  
-  
-  
+    //Here, we will fetch the conversations of this users
+    const FetchConversation = async () => {
+      setLoading(true);
+      try {
+        const result = await axios.get(
+          `${API}/chat/get-message/${selectedUser._id}`,
+
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (result.data.success == "fetched") {
+          setMessages(result.data.messages)
+          //setEmail(result.data.users.email);
+          // setFriendList(result.data.user.friends);
+        }
+      } catch (err) {
+        setLoading(false);
+        console.error(err);
+        toast.info("An error occured while fetching the messages");
+      }
+    };
+    FetchConversation()
+  }, []);
+
   return (
-    <section className={!show ? "w-3/4 tab:w-full h-full flex tab:overflow-y-hidden flex-col gap-2": "hidden"}>
+    <section
+      className={
+        !show
+          ? "w-3/4 tab:w-full h-full flex tab:overflow-y-hidden flex-col gap-2"
+          : "hidden"
+      }
+    >
       <aside className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
@@ -55,17 +87,19 @@ const ChatSidebar = () => {
           <SlOptionsVertical className="text-2xl font-bold cursor-pointer transition hover:text-blue-700" />
         </div>
       </aside>
-      <aside className="h-2/3 overflow-y-auto relative">
-        
-        <ChatBoxSender message={"Yes, sure"} time={"11:26 AM"} />
-        <ChatBoxSender message={"I am open to frontend, and backend roles involving Javascript and Typescript."} time={"11:26 AM"} />
-        <ChatBoxes message={"Okay...will inform you when there is a vacancy in my company"} time={"11:26 AM"} />
+      {loading ? (
+        <p>Loading messages</p>
+      ) : (
+        <aside className="h-2/3 overflow-y-auto relative">
+          {messages?.map((value, index) => {
 
-       
-      </aside>
+          <ChatBoxSender key={index} message={value.messages} time={"11:26 AM"} />
+          })}
+
+        </aside>
+      )}
       <MessageInput />
-    </section> 
-
+    </section>
   );
 };
 
